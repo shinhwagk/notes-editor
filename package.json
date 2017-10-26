@@ -11,17 +11,11 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello",
-        "onView:nodeDependencies"
+        "onView:note"
     ],
     "main": "./out/extension",
     "contributes": {
-        "commands": [
-            {
-                "command": "extension.sayHello",
-                "title": "Hello World"
-            }
-        ],
+        "commands": [],
         "views": {
             "explorer": [
                 {
@@ -40,8 +34,8 @@
     },
     "devDependencies": {
         "typescript": "^2.5.3",
-        "vscode": "^1.1.5",
-        "@types/node": "^7.0.43",
-        "@types/mocha": "^2.2.42"
+        "vscode": "^1.1.6",
+        "@types/node": "^8.0.47",
+        "@types/mocha": "^2.2.43"
     }
 }
