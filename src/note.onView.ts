@@ -1,32 +1,45 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-
-class NoteProvider implements vscode.TreeDataProvider<Dependency> {
+fs.readFileSync
+class NoteTreeProvider implements vscode.TreeDataProvider<NoteNode> {
 
   constructor(private workspaceRoot: string) { }
 
-  getTreeItem(element: Dependency): vscode.TreeItem {
-    return element;
+  getTreeItem(element: NoteNode): vscode.TreeItem {
+    return {
+      label: element.label,
+      collapsibleState: vscode.TreeItemCollapsibleState.Collapsed
+    };
   }
 
-  getChildren(element?: Dependency): Thenable<Dependency[]> {
-    // if (!this.workspaceRoot) {
-    // vscode.window.showInformationMessage('No dependency in empty workspace');
-    // return Promise.resolve([]);
-    // }
-    const p = path.join(this.workspaceRoot, 'index.json');
+  getChildren(element?: NoteNode): Thenable<NoteNode[]> {
+    let p: string;
+    let dependencies: NoteNode[];
 
-    vscode.window.showInformationMessage(p);
+    if (element) {
+      p = path.join(this.workspaceRoot, "index", element.parent, element.label + ".json");
+      const nodeJson = JSON.parse(fs.readFileSync(p, 'utf-8'));
+      dependencies = nodeJson["labels"].map(label => { return { parent: path.join(element.parent, element.label), label: label } })
+    } else {
+      p = path.join(this.workspaceRoot, 'index.json');
+      const nodeJson = JSON.parse(fs.readFileSync(p, 'utf-8'));
+      dependencies = nodeJson["labels"].map(label => { return { parent: "", label: label } })
+    }
 
-    const packageJson = JSON.parse(fs.readFileSync("e:/github3/looke/index.json", 'utf-8'));
-    vscode.window.showInformationMessage(JSON.stringify(packageJson["labels"]))
 
-    const a: Dependency[] = packageJson["labels"].map(label => new Dependency(label, vscode.TreeItemCollapsibleState.Collapsed))
 
-    return new Promise(resolve => resolve(a));
+
+    return new Promise(resolve => resolve(dependencies));
   }
 }
+
+interface NoteNode {
+  parent: string
+  label: string
+}
+
+const makeNoteNodePath = (parent: string, label: string) => path.join(this._parent, this.label);
 
 class Dependency extends vscode.TreeItem {
 
@@ -47,4 +60,4 @@ class Dependency extends vscode.TreeItem {
 
 }
 
-export const makeNoteProvider: (rootPath: string) => vscode.TreeDataProvider<Dependency> = (rootPath) => new NoteProvider(rootPath);
+export const makeNoteProvider: (rootPath: string) => vscode.TreeDataProvider<NoteNode> = (rootPath) => new NoteTreeProvider(rootPath);
