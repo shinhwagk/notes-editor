@@ -1,63 +1,75 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-fs.readFileSync
+
 class NoteTreeProvider implements vscode.TreeDataProvider<NoteNode> {
 
-  constructor(private workspaceRoot: string) { }
+  private noteTreeModle: NoteTreeModle;
+
+  constructor(private workspaceRoot: string) {
+    this.noteTreeModle = new NoteTreeModle(workspaceRoot)
+  }
 
   getTreeItem(element: NoteNode): vscode.TreeItem {
     return {
       label: element.label,
-      collapsibleState: vscode.TreeItemCollapsibleState.Collapsed
+      collapsibleState: element.child ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None
     };
   }
 
-  getChildren(element?: NoteNode): Thenable<NoteNode[]> {
-    let p: string;
-    let dependencies: NoteNode[];
-
-    if (element) {
-      p = path.join(this.workspaceRoot, "index", element.parent, element.label + ".json");
-      const nodeJson = JSON.parse(fs.readFileSync(p, 'utf-8'));
-      dependencies = nodeJson["labels"].map(label => { return { parent: path.join(element.parent, element.label), label: label } })
-    } else {
-      p = path.join(this.workspaceRoot, 'index.json');
-      const nodeJson = JSON.parse(fs.readFileSync(p, 'utf-8'));
-      dependencies = nodeJson["labels"].map(label => { return { parent: "", label: label } })
-    }
-
-
-
-
-    return new Promise(resolve => resolve(dependencies));
+  async getChildren(element?: NoteNode): Promise<NoteNode[]> {
+    return element ? this.noteTreeModle.makeLeafNodeTree(element.parent) : this.noteTreeModle.makeTopNodeTree()
   }
 }
 
 interface NoteNode {
   parent: string
   label: string
+  child?: boolean
 }
 
-const makeNoteNodePath = (parent: string, label: string) => path.join(this._parent, this.label);
+class NoteTreeModle {
+  constructor(private workspaceRoot: string) { }
 
-class Dependency extends vscode.TreeItem {
+  private indexName = ".index.json"
 
-  constructor(
-    public readonly label: string,
-    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-    public readonly command?: vscode.Command
-  ) {
-    super(label, collapsibleState);
-  }
+  public makeTopNodeTree = () => fileToJson(this.topIndexPath)["labels"].map((label: string) => this.makeNoteNode(label, this.topNodePath(label)));
 
-  // iconPath = {
-  //   light: path.join(__filename, '..', '..', '..', 'resources', 'light', 'dependency.svg'),
-  //   dark: path.join(__filename, '..', '..', '..', 'resources', 'dark', 'dependency.svg')
-  // };
+  public makeLeafNodeTree = (parent: string) => fileToJson(this.leafIndexPath(parent))["labels"].map((label: string) => this.makeNoteNode(label, this.leafNodePath(parent)(label)));
 
-  contextValue = 'dependency';
+  private topIndexPath = path.join(this.workspaceRoot, this.indexName);
 
+  private leafIndexPath = (nodePath: string) => path.join(this.workspaceRoot, nodePath, this.indexName);
+
+  private topNodePath = (label: string) => label
+
+  private leafNodePath = (parent: string) => (label: string) => path.join(parent, label)
+
+  private makeNoteNode = (label: string, nodePath: string) => { return { parent: nodePath, label: label, child: this.existChildCheck(this.leafIndexPath(nodePath)) } }
+
+  private existChildCheck = (indexPath: string) => fileToJson(indexPath)["labels"].length >= 1;
 }
+
+const fileToJson: <T>(filePath: string) => T = (filePath: string) => JSON.parse(fs.readFileSync(filePath, "utf-8"));
+
+
+// class Dependency extends vscode.TreeItem {
+
+//   constructor(
+//     public readonly label: string,
+//     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+//     public readonly command?: vscode.Command
+//   ) {
+//     super(label, collapsibleState);
+//   }
+
+//   // iconPath = {
+//   //   light: path.join(__filename, '..', '..', '..', 'resources', 'light', 'dependency.svg'),
+//   //   dark: path.join(__filename, '..', '..', '..', 'resources', 'dark', 'dependency.svg')
+//   // };
+
+//   contextValue = 'dependency';
+
+// }
 
 export const makeNoteProvider: (rootPath: string) => vscode.TreeDataProvider<NoteNode> = (rootPath) => new NoteTreeProvider(rootPath);
