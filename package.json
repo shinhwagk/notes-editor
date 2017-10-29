@@ -11,11 +11,15 @@
         "Other"
     ],
     "activationEvents": [
+        "extension.showVscodeNotePreview",
         "onView:note"
     ],
     "main": "./out/extension",
     "contributes": {
-        "commands": [],
+        "commands": [			{
+            "command": "extension.showVscodeNotePreview",
+            "title": "Show Vscode Note"
+        }],
         "views": {
             "explorer": [
                 {
