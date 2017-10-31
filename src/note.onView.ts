@@ -11,14 +11,11 @@ class NoteTreeProvider implements vscode.TreeDataProvider<NoteNode> {
   }
 
   getTreeItem(element: NoteNode): vscode.TreeItem {
-    return {
-      label: element.label,
-      collapsibleState: element.child ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None
-    };
+    return this.noteTreeModle.getTreeItem(element)
   }
 
   async getChildren(element?: NoteNode): Promise<NoteNode[]> {
-    return element ? this.noteTreeModle.makeLeafNodeTree(element.parent) : this.noteTreeModle.makeTopNodeTree()
+    return this.noteTreeModle.getChildren(element)
   }
 }
 
@@ -33,21 +30,29 @@ class NoteTreeModle {
 
   private indexName = ".index.json"
 
-  public makeTopNodeTree = () => fileToJson(this.topIndexPath)["labels"].map((label: string) => this.makeNoteNode(label, this.topNodePath(label)));
+  private genNodeTree = (parent?: string) => fileToJson(this.genIndexPath(parent))["labels"].map((label: string) => this.genChildNoteNode(label, this.genNodePath(parent)(label)));
 
-  public makeLeafNodeTree = (parent: string) => fileToJson(this.leafIndexPath(parent))["labels"].map((label: string) => this.makeNoteNode(label, this.leafNodePath(parent)(label)));
+  private genIndexPath = (nodePath?: string) => nodePath ? path.join(this.workspaceRoot, nodePath, this.indexName) : path.join(this.workspaceRoot, this.indexName)
 
-  private topIndexPath = path.join(this.workspaceRoot, this.indexName);
+  private genNodePath = (parent?: string) => (label: string) => parent ? path.join(parent, label) : label;
 
-  private leafIndexPath = (nodePath: string) => path.join(this.workspaceRoot, nodePath, this.indexName);
-
-  private topNodePath = (label: string) => label
-
-  private leafNodePath = (parent: string) => (label: string) => path.join(parent, label)
-
-  private makeNoteNode = (label: string, nodePath: string) => { return { parent: nodePath, label: label, child: this.existChildCheck(this.leafIndexPath(nodePath)) } }
+  private genChildNoteNode = (label: string, parentPath: string) => { return { parent: parentPath, label: label, child: this.existChildCheck(this.genIndexPath(parentPath)) } }
 
   private existChildCheck = (indexPath: string) => fileToJson(indexPath)["labels"].length >= 1;
+
+  public async getChildren(element?: NoteNode): Promise<NoteNode[]> {
+    return element ? this.genNodeTree(element.parent) : this.genNodeTree()
+  }
+
+  public getTreeItem(element: NoteNode): vscode.TreeItem {
+    const indexPath = this.genIndexPath(this.genNodePath()(element.parent))
+    return {
+      label: element.label,
+      collapsibleState: element.child ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
+      command: { title: "Show Vscode Note", command: "extension.showVscodeNotePreview", arguments: [indexPath] }
+    };
+  }
+
 }
 
 const fileToJson: <T>(filePath: string) => T = (filePath: string) => JSON.parse(fs.readFileSync(filePath, "utf-8"));
