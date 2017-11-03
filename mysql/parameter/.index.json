@@ -1,0 +1,28 @@
+{
+    "labels":  [
+
+               ],
+    "categorys":  [
+                      {
+                          "cols":  2,
+                          "name":  "mysqld",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  96,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  97,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  99,
+                                            "file":  false
+                                        }
+                                    ]
+                      }
+                  ]
+}

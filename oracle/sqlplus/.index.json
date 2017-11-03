@@ -1,0 +1,117 @@
+{
+    "labels":  [
+
+               ],
+    "categorys":  [
+                      {
+                          "cols":  2,
+                          "name":  "show",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  45,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  46,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  47,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  48,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "set sqlprompt",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  49,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  50,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  51,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  52,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  53,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  54,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  55,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "execute",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  58,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  59,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  1,
+                          "name":  "concept",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  60,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "other",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  63,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  64,
+                                            "file":  false
+                                        }
+                                    ]
+                      }
+                  ]
+}

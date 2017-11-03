@@ -1,0 +1,23 @@
+{
+    "labels":  [
+                   "json"
+               ],
+    "categorys":  [
+                      {
+                          "cols":  2,
+                          "name":  "logger",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  162,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  163,
+                                            "file":  false
+                                        }
+                                    ]
+                      }
+                  ]
+}

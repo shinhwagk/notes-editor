@@ -1,0 +1,94 @@
+{
+    "labels":  [
+
+               ],
+    "categorys":  [
+                      {
+                          "cols":  2,
+                          "name":  "configure",
+                          "notes":  [
+                                        {
+                                            "doc":  true,
+                                            "id":  2,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  true,
+                                            "id":  3,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  true,
+                                            "id":  4,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "command",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  100,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  101,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  102,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  103,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  104,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  105,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  106,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  107,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  108,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  109,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  110,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  117,
+                                            "file":  false
+                                        }
+                                    ]
+                      }
+                  ]
+}

@@ -1,0 +1,18 @@
+{
+    "labels": [
+        "collect"
+    ],
+    "categorys": [
+        {
+            "cols": 2,
+            "name": "install",
+            "notes": [
+                {
+                    "doc": false,
+                    "id": 93,
+                    "file": false
+                }
+            ]
+        }
+    ]
+}

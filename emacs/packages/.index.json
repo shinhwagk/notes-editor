@@ -1,0 +1,169 @@
+{
+    "labels":  [
+
+               ],
+    "categorys":  [
+                      {
+                          "cols":  2,
+                          "name":  "pdf-tools",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  65,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  66,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "clojure-mode",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  67,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "cider",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  68,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "smartparens",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  69,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  86,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  87,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "popwin",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  70,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "nodejs-repl",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  71,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "js2-mode",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  72,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "swiper",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  73,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "smex",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  74,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "hungry-delete",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  75,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "monokai-theme",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  76,
+                                            "file":  false
+                                        }
+                                    ]
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "company",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  77,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  83,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  84,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  85,
+                                            "file":  false
+                                        }
+                                    ]
+                      }
+                  ]
+}

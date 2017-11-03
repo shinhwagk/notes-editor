@@ -1,0 +1,18 @@
+{
+    "labels":  [
+
+               ],
+    "categorys":  [
+                      {
+                          "cols":  2,
+                          "name":  "concept",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  113,
+                                            "file":  false
+                                        }
+                                    ]
+                      }
+                  ]
+}

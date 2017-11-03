@@ -1,0 +1,18 @@
+{
+    "labels":  [
+
+               ],
+    "categorys":  [
+                      {
+                          "cols":  1,
+                          "name":  "operation",
+                          "notes":  [
+                                        {
+                                            "doc":  true,
+                                            "id":  166,
+                                            "file":  false
+                                        }
+                                    ]
+                      }
+                  ]
+}

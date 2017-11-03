@@ -1,0 +1,54 @@
+{
+    "categorys":  [
+                      {
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  118,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  119,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  120,
+                                            "file":  false
+                                        }
+                                    ],
+                          "cols":  2,
+                          "name":  "range"
+                      },
+                      {
+                          "cols":  2,
+                          "name":  "collection",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  126,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  127,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  128,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  true,
+                                            "id":  129,
+                                            "file":  false
+                                        }
+                                    ]
+                      }
+                  ],
+    "labels":  [
+
+               ]
+}

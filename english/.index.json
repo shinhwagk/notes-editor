@@ -1,0 +1,74 @@
+{
+    "labels":  [
+
+               ],
+    "categorys":  [
+                      {
+                          "name":  "phrase",
+                          "notes":  [
+                                        {
+                                            "id":  138,
+                                            "doc":  false,
+                                            "file":  false
+                                        },
+                                        {
+                                            "id":  141,
+                                            "doc":  false,
+                                            "file":  false
+                                        },
+                                        {
+                                            "id":  143,
+                                            "doc":  false,
+                                            "file":  false
+                                        },
+                                        {
+                                            "id":  144,
+                                            "doc":  false,
+                                            "file":  false
+                                        },
+                                        {
+                                            "id":  145,
+                                            "doc":  false,
+                                            "file":  false
+                                        },
+                                        {
+                                            "id":  146,
+                                            "doc":  false,
+                                            "file":  false
+                                        },
+                                        {
+                                            "id":  147,
+                                            "doc":  false,
+                                            "file":  false
+                                        },
+                                        {
+                                            "id":  148,
+                                            "doc":  false,
+                                            "file":  false
+                                        }
+                                    ],
+                          "cols":  2
+                      },
+                      {
+                          "name":  "词性",
+                          "notes":  [
+                                        {
+                                            "id":  139,
+                                            "doc":  false,
+                                            "file":  false
+                                        },
+                                        {
+                                            "id":  140,
+                                            "doc":  false,
+                                            "file":  false
+                                        },
+                                        {
+                                            "id":  142,
+                                            "doc":  false,
+                                            "file":  false
+                                        }
+                                    ],
+                          "cols":  3
+                      }
+                  ]
+}

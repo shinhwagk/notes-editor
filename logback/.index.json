@@ -1,0 +1,33 @@
+{
+    "labels":  [
+
+               ],
+    "categorys":  [
+                      {
+                          "cols":  2,
+                          "name":  "pattern",
+                          "notes":  [
+                                        {
+                                            "doc":  false,
+                                            "id":  171,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  172,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  173,
+                                            "file":  false
+                                        },
+                                        {
+                                            "doc":  false,
+                                            "id":  174,
+                                            "file":  false
+                                        }
+                                    ]
+                      }
+                  ]
+}
