@@ -9,16 +9,23 @@ const genNoteFileView = (file) => {
 }
 
 const genNoteHtml = (cols: number) => (props: NoteNote) => {
-  return '<tr>' + Array.from(Array.from({ length: cols }).keys()).map(idx => `<td>${idx}</td>`).join("") + '</tr>'
+  const v = (x) => fs.readFileSync(gloglpath + "/" + props.id + "/" + x, "utf-8")
+  return '<tr>' + `<td>${props.id}</td>` + Array.from(Array.from({ length: cols }).keys()).map(idx => `<td><pre>${v(idx + 1)}</pre></td>`).join("") + '</tr>'
+}
+
+const genAddNoteUi = (nodePath, category) => {
+  return `<a href="${encodeURI('command:extension.addNote?' + JSON.stringify([nodePath, category]))}"">add</a>`
 }
 
 const genCategoryHtml = (props: NoteCategory) => {
   const genNoteHtmlFun = genNoteHtml(props.cols);
-  return `<div><div>${props.name}</div>` + '<table border="1" style="width:100%">' + props.notes.map(note => genNoteHtmlFun(note)).join("") + '</table></div>'
+  return `<div><div>${props.name}${genAddNoteUi(gloglpath, props.name)}</div>` + '<table border="1" style="width:100%">' + props.notes.map(note => genNoteHtmlFun(note)).join("") + '</table></div>'
 }
 
-const generateHtmlView = (indexFilePath: string) => {
-  const indexContent = JSON.parse(indexFilePath ? fs.readFileSync(indexFilePath, "UTF-8") : `{"labels":[],"categorys":[]}`);
+let gloglpath: string;
+const generateHtmlView = (nodeFsPath: string) => {
+  gloglpath = nodeFsPath
+  const indexContent = JSON.parse(nodeFsPath ? fs.readFileSync(nodeFsPath + "/" + ".index.json", "UTF-8") : `{"labels":[],"categorys":[]}`);
 
   return `
     <head>
@@ -37,11 +44,13 @@ interface NoteCategory {
   cols: number;
   name: string;
   notes: NoteNote[];
+
 }
 
 interface NoteNote {
   doc?: boolean;
   file?: boolean;
+  id: number;
 }
 
 export { generateHtmlView }

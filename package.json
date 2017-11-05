@@ -11,7 +11,13 @@
     "Other"
   ],
   "activationEvents": [
-    "extension.showVscodeNotePreview",
+    "onCommand:extension.showVscodeNotePreview",
+    "onCommand:extension.addNote",
+    "onCommand:extension.modifyNote",
+    "onCommand:extension.deleteNote",
+    "onCommand:extension.addCategory",
+    "onCommand:extension.modifyCategory",
+    "onCommand:extension.deleteCategory",
     "onView:note"
   ],
   "main": "./out/extension",

@@ -9,24 +9,29 @@ class TextDocumentContentProvider implements vscode.TextDocumentContentProvider 
 
     private indexFilePath: string;
 
+    private nodePath: string;
+
     get onDidChange(): vscode.Event<vscode.Uri> {
         return this._onDidChange.event;
     }
 
-    public update(indexPath: string): void {
-        this.indexFilePath = indexPath
+    public update(nodePath: string): void {
+        this.nodePath = nodePath;
+        this.indexFilePath = nodePath + "/" + "index.json"
         this._onDidChange.fire(this.uri);
     }
 
     async provideTextDocumentContent(uri: vscode.Uri, token: vscode.CancellationToken): Promise<string> {
-        return generateHtmlView(this.indexFilePath);
+        return generateHtmlView(this.nodePath);
     }
 }
 
 const previewUri = vscode.Uri.parse("vscode-note://note/content");
-const provider = new TextDocumentContentProvider(previewUri)
+const provider = new TextDocumentContentProvider(previewUri);
 vscode.workspace.registerTextDocumentContentProvider("vscode-note", provider);
-vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.One, "aaadfdf")
+
+vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.One, "vscode-note")
     .then(success => { }, reason => vscode.window.showErrorMessage(reason))
-export const disposable = vscode.commands.registerCommand('extension.showVscodeNotePreview', (query) => provider.update(query));
+
+export const commandShowVscodeNote = vscode.commands.registerCommand('extension.showVscodeNotePreview', (nodePath) => provider.update(nodePath));
 

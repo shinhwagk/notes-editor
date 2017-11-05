@@ -36,6 +36,8 @@ class NoteTreeModle {
 
   private genNodePath = (parent?: string) => (label: string) => parent ? path.join(parent, label) : label;
 
+  private genNodeFsPath = (nodePath) => path.join(this.workspaceRoot, nodePath)
+
   private genChildNoteNode = (label: string, parentPath: string) => { return { parent: parentPath, label: label, child: this.existChildCheck(this.genIndexPath(parentPath)) } }
 
   private existChildCheck = (indexPath: string) => fileToJson(indexPath)["labels"].length >= 1;
@@ -45,7 +47,7 @@ class NoteTreeModle {
   }
 
   public getTreeItem(element: NoteNode): vscode.TreeItem {
-    const indexPath = this.genIndexPath(this.genNodePath()(element.parent))
+    const indexPath = this.genNodeFsPath(this.genNodePath()(element.parent))
     return {
       label: element.label,
       collapsibleState: element.child ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
