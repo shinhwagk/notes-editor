@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as vscode from 'vscode';
 
 const genNoteDocView = (doc) => {
   return doc ? "<button>ab</button>" : "<button>ab</button>";
@@ -13,13 +14,13 @@ const genNoteHtml = (cols: number) => (props: NoteNote) => {
   return '<tr>' + `<td>${props.id}</td>` + Array.from(Array.from({ length: cols }).keys()).map(idx => `<td><pre>${v(idx + 1)}</pre></td>`).join("") + '</tr>'
 }
 
-const genAddNoteUi = (nodePath, category) => {
-  return `<a href="${encodeURI('command:extension.addNote?' + JSON.stringify([nodePath, category]))}"">add</a>`
+const genAddNoteUi = (nodePath, categoryIndex: number) => {
+  return `<a href="${encodeURI('command:extension.addNote?' + JSON.stringify([nodePath, categoryIndex]))}"">add</a>`
 }
 
-const genCategoryHtml = (props: NoteCategory) => {
+const genCategoryHtml = (props: NoteCategory, categoryIndex: number) => {
   const genNoteHtmlFun = genNoteHtml(props.cols);
-  return `<div><div>${props.name}${genAddNoteUi(gloglpath, props.name)}</div>` + '<table border="1" style="width:100%">' + props.notes.map(note => genNoteHtmlFun(note)).join("") + '</table></div>'
+  return `<div><div>${props.name}${genAddNoteUi(gloglpath, categoryIndex)}</div>` + '<table border="1" style="width:100%">' + props.notes.map(note => genNoteHtmlFun(note)).join("") + '</table></div>'
 }
 
 let gloglpath: string;
@@ -31,7 +32,7 @@ const generateHtmlView = (nodeFsPath: string) => {
     <head>
     </head>
     <body>
-        ${indexContent["categorys"].map(category => genCategoryHtml(category)).join("")}
+        ${indexContent["categorys"].map((category, index) => genCategoryHtml(category, index)).join("")}
     </body>`
 }
 
