@@ -1,18 +1,1 @@
-{
-    "labels":  [
-
-               ],
-    "categorys":  [
-                      {
-                          "cols":  2,
-                          "name":  "command",
-                          "notes":  [
-                                        {
-                                            "doc":  false,
-                                            "id":  98,
-                                            "file":  false
-                                        }
-                                    ]
-                      }
-                  ]
-}
+{"labels":[],"categorys":[{"cols":2,"name":"command","notes":[{"d":0,"f":0}]}]}

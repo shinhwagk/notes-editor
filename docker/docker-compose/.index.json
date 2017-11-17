@@ -1,18 +1,1 @@
-{
-    "labels":  [
-
-               ],
-    "categorys":  [
-                      {
-                          "cols":  1,
-                          "name":  "operation",
-                          "notes":  [
-                                        {
-                                            "doc":  true,
-                                            "id":  166,
-                                            "file":  false
-                                        }
-                                    ]
-                      }
-                  ]
-}
+{"labels":[],"categorys":[{"cols":1,"name":"operation","notes":[{"d":1,"f":0}]}]}
