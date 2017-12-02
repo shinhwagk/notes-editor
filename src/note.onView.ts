@@ -19,7 +19,7 @@ class NoteTreeProvider implements vscode.TreeDataProvider<NoteNode> {
   }
 }
 
-interface NoteNode {
+export interface NoteNode {
   parent: string
   label: string
   child?: boolean
@@ -58,25 +58,5 @@ class NoteTreeModle {
 }
 
 const fileToJson: <T>(filePath: string) => T = (filePath: string) => JSON.parse(fs.readFileSync(filePath, "utf-8"));
-
-
-// class Dependency extends vscode.TreeItem {
-
-//   constructor(
-//     public readonly label: string,
-//     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-//     public readonly command?: vscode.Command
-//   ) {
-//     super(label, collapsibleState);
-//   }
-
-//   // iconPath = {
-//   //   light: path.join(__filename, '..', '..', '..', 'resources', 'light', 'dependency.svg'),
-//   //   dark: path.join(__filename, '..', '..', '..', 'resources', 'dark', 'dependency.svg')
-//   // };
-
-//   contextValue = 'dependency';
-
-// }
 
 export const makeNoteProvider: (rootPath: string) => vscode.TreeDataProvider<NoteNode> = (rootPath) => new NoteTreeProvider(rootPath);

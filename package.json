@@ -18,14 +18,31 @@
     "onCommand:extension.addCategory",
     "onCommand:extension.modifyCategory",
     "onCommand:extension.deleteCategory",
-    "onView:note"
+    "onView:note",
+    "onCommand:extension.sayHello"
   ],
   "main": "./out/extension",
   "contributes": {
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "extension.addCategory",
+          "when": "view == note"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "extension.showVscodeNotePreview",
         "title": "Show Vscode Note"
+      },
+      {
+        "command": "extension.addNote",
+        "title": "add vsnote"
+      },
+      {
+        "command": "extension.addCategory",
+        "title": "note: add category"
       }
     ],
     "views": {
@@ -47,9 +64,9 @@
   "devDependencies": {
     "@types/mocha": "^2.2.44",
     "@types/node": "^8.0.53",
-    "awesome-typescript-loader": "^3.4.0",
+    "awesome-typescript-loader": "^3.4.1",
     "typescript": "^2.6.2",
-    "vscode": "^1.1.8"
+    "vscode": "^1.1.9"
   },
   "dependencies": {}
 }
