@@ -1,1 +1,1 @@
-{"labels":["cdb&pdb","sqlplus","sql"],"categorys":[{"cols":1,"name":"error","notes":[{"d":1,"f":0}]},{"cols":1,"name":"install","notes":[{"d":1,"f":0}]}]}
+{"labels":["cdb&pdb","sqlplus","sql"],"categorys":[{"cols":1,"name":"error","notes":[{"d":1,"f":0,"i":1}]},{"cols":1,"name":"install","notes":[{"d":1,"f":0,"i":2}]}],"seq":3}

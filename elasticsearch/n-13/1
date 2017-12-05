@@ -1,0 +1,2 @@
+post /bank/account/_bulk?pretty&refresh' \
+--data-binary "@accounts.json"

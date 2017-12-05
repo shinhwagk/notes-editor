@@ -16,6 +16,7 @@ function addId(nodePath) {
       id += 1
     }
   }
+  obj["seq"] = id
   fs.writeFileSync(indexFile, JSON.stringify(obj), "UTF-8")
   for (const label of obj["labels"]) {
     const p = path.join(nodePath, label)
