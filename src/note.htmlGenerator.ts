@@ -12,12 +12,12 @@ const genNoteFileView = (file) => {
 
 const genNoteHtml = (cols: number) => (props: NoteNote) => {
   const v = (x: string) => fs.readFileSync(path.join(gloglpath, `n-${props.i}`, x), "utf-8")
-  return '<tr>' + `<td>${props.i}</td>` + Array.from(Array.from({ length: cols }).keys()).map(idx => `<td><pre>${v((idx + 1).toString())}</pre></td>`).join("") + '</tr>'
+  return '<tr>' + `<td style="width:15px">${props.i}</td>` + Array.from(Array.from({ length: cols }).keys()).map(idx => `<td><pre>${v((idx + 1).toString())}</pre></td>`).join("") + '</tr>'
 }
 
 const genAddNoteUi = (nodePath, cIdx: number) => {
   const addUi = `<a style="color:red" href="${encodeURI('command:extension.addNote?' + JSON.stringify([nodePath, cIdx]))}">add</a>`
-  const delUi = `<a style="color:red" href="${encodeURI('command:extension.delNote?' + JSON.stringify([nodePath, cIdx]))}">del</a>`
+  const delUi = `<a style="color:red" href="${encodeURI('command:extension.deleteNote?' + JSON.stringify([nodePath, cIdx]))}">del</a>`
   return "&nbsp;" + addUi + "&nbsp;" + delUi
 }
 
