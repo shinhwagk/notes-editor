@@ -1,10 +1,14 @@
-import * as vscode from 'vscode';
 import * as fs from 'fs';
+import * as path from 'path';
+
+import * as vscode from 'vscode';
 
 import { generateHtmlView } from './note.htmlGenerator'
 
 class TextDocumentContentProvider implements vscode.TextDocumentContentProvider {
+    
     constructor(private uri: vscode.Uri) { }
+
     private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
 
     private indexFilePath: string;
@@ -17,7 +21,7 @@ class TextDocumentContentProvider implements vscode.TextDocumentContentProvider 
 
     public update(nodePath: string): void {
         this.nodePath = nodePath;
-        this.indexFilePath = nodePath + "/" + "index.json"
+        this.indexFilePath = path.join(nodePath, ".index.json")
         this._onDidChange.fire(this.uri);
     }
 

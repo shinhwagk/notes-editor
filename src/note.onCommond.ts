@@ -2,15 +2,15 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
+import { deleteFolderRecursive, getNodeIndexObj } from './note.lib'
 import { NoteNode } from './note.onView';
 
 const modifyNoteDisposable = vscode.commands.registerCommand('extension.modifyNote', async (nodePath, cIdx) => {
-    const indexFilePath = path.join(nodePath, ".index.json")
-    const indexContent = JSON.parse(fs.readFileSync(indexFilePath, "UTF-8"))
+    const indexContent = getNodeIndexObj(nodePath)
 
     const category = indexContent["categorys"][cIdx]
     const cols = category["cols"]
-    const uri = vscode.Uri.file(path.join(nodePath, ``".index.json"``))
+    const uri = vscode.Uri.file(path.join(nodePath, ".index.json"))
 
     for (let i = 1; i <= cols; i++) {
         vscode.workspace.openTextDocument(uri).then(p => vscode.window.showTextDocument(p))
@@ -25,24 +25,10 @@ const modifyNoteDisposable = vscode.commands.registerCommand('extension.modifyNo
 // vscode.commands.registerCommand('extension.modifyLabel', (nodePath) => nodePath);
 // vscode.commands.registerCommand('extension.deleteLabel', (nodePath) => nodePath);
 
-const deleteFolderRecursive = (p) => {
-    vscode.window.showInformationMessage(p)
-    if (fs.existsSync(p)) {
-        fs.readdirSync(p).forEach((file, index) => {
-            var curPath = path.join(p, file);
-            if (fs.lstatSync(curPath).isDirectory()) { // recurse
-                deleteFolderRecursive(curPath);
-            } else { // delete file
-                fs.unlinkSync(curPath);
-            }
-        });
-        fs.rmdirSync(p);
-    }
-};
+
 
 const deleteNoteDisposable = (rootPath) => vscode.commands.registerCommand('extension.deleteNote', async (noteNode, cIdx: number) => {
-    const indexFilePath = path.join(noteNode, ".index.json")
-    const indexContent = JSON.parse(fs.readFileSync(indexFilePath, "UTF-8"))
+    const indexContent = getNodeIndexObj(noteNode)
     const notePickList: vscode.QuickPickItem[] = [];
     const category = indexContent["categorys"][cIdx.toString()]
     const notes: any[] = category["notes"]
@@ -54,7 +40,7 @@ const deleteNoteDisposable = (rootPath) => vscode.commands.registerCommand('exte
     deleteFolderRecursive(path.join(noteNode, `n-${noteId.label}`))
 
     notes.splice(Number(noteId.description), 1)
-    fs.writeFileSync(indexFilePath, JSON.stringify(indexContent), { encoding: "UTF-8" })
+    fs.writeFileSync(path.join(noteNode, ".index.json"), JSON.stringify(indexContent), { encoding: "UTF-8" })
     vscode.commands.executeCommand('extension.showVscodeNotePreview', noteNode).then(success => { }, reason => vscode.window.showErrorMessage(reason))
 });
 
@@ -82,8 +68,7 @@ const addNoteDisposable = vscode.commands.registerCommand('extension.addNote', a
     itemPickList.push({ label: 'None', description: '' });
     let modeChoice = await vscode.window.showQuickPick(itemPickList);
 
-    const indexFilePath = path.join(nodePath, ".index.json")
-    const indexContent = JSON.parse(fs.readFileSync(indexFilePath, "UTF-8"))
+    const indexContent = getNodeIndexObj(nodePath)
     let seq = indexContent["seq"]
 
     let note;
