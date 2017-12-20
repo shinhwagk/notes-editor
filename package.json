@@ -1,15 +1,19 @@
 {
   "name": "vscode-note",
   "displayName": "vscode-note",
-  "description": "",
-  "version": "v1.3.2",
-  "publisher": "vscode-note",
+  "description": "note by file",
+  "version": "0.0.2",
+  "publisher": "shinhwagk",
   "engines": {
     "vscode": "^1.17.0"
   },
   "categories": [
     "Other"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shinhwagk/vscode-note"
+  },
   "activationEvents": [
     "onCommand:extension.showVscodeNotePreview",
     "onCommand:extension.addNote",

@@ -12,7 +12,7 @@ const genNoteFileView = (file) => {
 
 const genNoteHtml = (cols: number) => (props: NoteNote) => {
   const v = (x: string) => fs.readFileSync(path.join(gloglpath, `n-${props.i}`, x), "utf-8")
-  return '<tr>' + `<td style="width:15px">${props.i}</td>` + Array.from(Array.from({ length: cols }).keys()).map(idx => `<td><pre>${v((idx + 1).toString())}</pre></td>`).join("") + '</tr>'
+  return '<tr>' + `<td style="width:15px">${props.i}</td>` + Array.from(Array.from({ length: cols }).keys()).map(idx => `<td><pre>${v((idx + 1).toString())}</pre></td>`).join("") + `<td><a style="color:red" href="${encodeURI('command:extension.modifyNote?' + JSON.stringify([gloglpath, 0]))}">U</a></td>` + '</tr>'
 }
 
 const genAddNoteUi = (nodePath, cIdx: number) => {

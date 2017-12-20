@@ -1,65 +1,59 @@
-# vscode-note README
+# Git History (including _git log_)
 
-This is the README for your extension "vscode-note". After writing up a brief description, we recommend including the following sections.
+View git log along with the graph and details.   
+View the history of a file (Git log) or the history of a line in a file (Git Blame).
+View a previous copy of the file.
+Compare a previous version with the version in the workspace or another.
+View commit log details for a selected commit.
+Compare commits.  
 
 ## Features
+* **View Git History with graph and details (latest feature)**
+* View the details of a commit, such as author name, email, date, committer name, email, date and comments.  
+* View a previous copy of the file or compare it against the local workspace version or a previous version.  
+* View the changes to the active line in the editor (Git Blame).  
+* Configure the information displayed in the list  
+* Use keyboard shortcuts to view history of a file or line  
+* Compare commits/branches  
+* View commit information in a treeview (snapshot of all changes)  
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Open the file to view the history, and then 
+Press F1 and select/type "Git: View History (git log)", "Git: View File History" or "Git: View Line History".
 
-For example if there is an image subfolder under your extension project workspace:
+## Available Commands
+* **View Git History (git log) (git.viewHistory)**
+* View File History (git.viewFileHistory)
+* View Line History (git.viewLineHistory)
 
-\!\[feature X\]\(images/feature-x.png\)
+## Keyboard Shortcuts
+You can add keyboard short cuts for the above commands by following the directions on the website [customization documentation](https://code.visualstudio.com/docs/customization/keybindings).
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+NOTE: The file for which the history is to be viewed, must already be opened.
+ 
+![Image of Git Log](https://raw.githubusercontent.com/DonJayamanne/gitHistoryVSCode/master/images/gitLogv2.gif)
 
-## Requirements
+![Image of File History](https://raw.githubusercontent.com/DonJayamanne/gitHistoryVSCode/master/images/fileHistoryCommand.gif)
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+![Image of another instance of File History](https://raw.githubusercontent.com/DonJayamanne/gitHistoryVSCode/master/images/fileHistoryCommandMore.gif)
 
-## Extension Settings
+![Image of Line History](https://raw.githubusercontent.com/DonJayamanne/gitHistoryVSCode/master/images/lineHistoryCommand.gif)
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+![Image of Compare](https://raw.githubusercontent.com/DonJayamanne/gitHistoryVSCode/master/images/compare.gif)
 
-For example:
+## Roadmap   
+- Search git history
 
-This extension contributes the following settings:
+## Big thanks to [Mike Surcouf](https://github.com/mikes-gh) & [ole](https://github.com/ole1986)
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+## Version 0.2.3
+- Ability to view commit information in explorer view  
+- Ability to compare commits  
+- Ability to view log of all branches [#144](https://github.com/DonJayamanne/gitHistoryVSCode/pull/144), [#93](https://github.com/DonJayamanne/gitHistoryVSCode/issues/93), [#129](https://github.com/DonJayamanne/gitHistoryVSCode/issues/129)  
+ 
+## Source
 
-## Known Issues
+[GitHub](https://github.com/DonJayamanne/gitHistoryVSCode)
+                
+## License
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+[MIT](https://raw.githubusercontent.com/DonJayamanne/bowerVSCode/master/LICENSE)

@@ -4,7 +4,18 @@ import * as fs from 'fs';
 
 import { NoteNode } from './note.onView';
 
-// export const disposable1 = vscode.commands.registerCommand('extension.modifyNote', (nodePath) => nodePath);
+const modifyNoteDisposable = vscode.commands.registerCommand('extension.modifyNote', async (nodePath, cIdx) => {
+    const indexFilePath = path.join(nodePath, ".index.json")
+    const indexContent = JSON.parse(fs.readFileSync(indexFilePath, "UTF-8"))
+
+    const category = indexContent["categorys"][cIdx]
+    const cols = category["cols"]
+    const uri = vscode.Uri.file(path.join(nodePath, ``".index.json"``))
+
+    for (let i = 1; i <= cols; i++) {
+        vscode.workspace.openTextDocument(uri).then(p => vscode.window.showTextDocument(p))
+    }
+});
 // // export const disposable2 = vscode.commands.registerCommand('extension.deleteNote', (nodePath) => nodePath);
 
 // export const disposable13 = vscode.commands.registerCommand('extension.modifyCategory', (nodePath) => nodePath);
@@ -100,4 +111,4 @@ const addNoteDisposable = vscode.commands.registerCommand('extension.addNote', a
     vscode.commands.executeCommand('extension.showVscodeNotePreview', nodePath).then(success => { }, reason => vscode.window.showErrorMessage(reason))
 })
 
-export { addNoteDisposable, addCategoryDisposable, deleteNoteDisposable }
+export { addNoteDisposable, addCategoryDisposable, deleteNoteDisposable, modifyNoteDisposable }
