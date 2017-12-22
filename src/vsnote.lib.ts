@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-function deleteFolderRecursive(p) {
+function deleteFolderRecursive(p): void {
     if (fs.existsSync(p)) {
         fs.readdirSync(p).forEach((file, index) => {
             var curPath = path.join(p, file);
@@ -15,11 +15,9 @@ function deleteFolderRecursive(p) {
     }
 };
 
-function getNodeIndexObj(nodePath) {
-    const nodeIndexFilePath = nodePath.join(nodePath, ".index.json")
+function genNodeIndexObj(idxFsPath): string {
+    const nodeIndexFilePath = path.join(idxFsPath, ".index.json")
     return JSON.parse(fs.readFileSync(nodeIndexFilePath, "UTF-8"))
 }
 
-
-
-export { deleteFolderRecursive, getNodeIndexObj }
+export { deleteFolderRecursive, genNodeIndexObj }

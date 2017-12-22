@@ -1,20 +1,21 @@
-import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import { deleteFolderRecursive, getNodeIndexObj } from './note.lib'
-import { NoteNode } from './note.onView';
+import * as vscode from 'vscode';
 
-const modifyNoteDisposable = vscode.commands.registerCommand('extension.modifyNote', async (nodePath, cIdx) => {
-    const indexContent = getNodeIndexObj(nodePath)
+import { deleteFolderRecursive, genNodeIndexObj } from './vsnote.lib'
+import { NoteNode } from './vsnote.onView';
+
+const modifyNoteDisposable = vscode.commands.registerCommand('extension.modifyNote', async (nodeFsPath, cIdx) => {
+    const indexContent = genNodeIndexObj(nodeFsPath)
 
     const category = indexContent["categorys"][cIdx]
-    const cols = category["cols"]
-    const uri = vscode.Uri.file(path.join(nodePath, ".index.json"))
+    // const cols = category["cols"]
 
-    for (let i = 1; i <= cols; i++) {
-        vscode.workspace.openTextDocument(uri).then(p => vscode.window.showTextDocument(p))
-    }
+    // for (let i = 1; i <= cols; i++) {
+    //     const uri = vscode.Uri.file(path.join(nodeFsPath, `n-1`, i.toString()))
+    //     vscode.workspace.openTextDocument(uri).then(p => vscode.window.showTextDocument(p))
+    // }
 });
 // // export const disposable2 = vscode.commands.registerCommand('extension.deleteNote', (nodePath) => nodePath);
 
@@ -25,24 +26,45 @@ const modifyNoteDisposable = vscode.commands.registerCommand('extension.modifyNo
 // vscode.commands.registerCommand('extension.modifyLabel', (nodePath) => nodePath);
 // vscode.commands.registerCommand('extension.deleteLabel', (nodePath) => nodePath);
 
+function addLabelDisposable(rootFsPath, m) {
+    return vscode.commands.registerCommand('extension.addLabel', async (noteNode: NoteNode) => {
+        const indexFilePath = path.join(rootFsPath, noteNode.parent)
+        vscode.window.showInformationMessage(indexFilePath)
 
+        const labelName = await vscode.window.showInputBox();
 
-const deleteNoteDisposable = (rootPath) => vscode.commands.registerCommand('extension.deleteNote', async (noteNode, cIdx: number) => {
-    const indexContent = getNodeIndexObj(noteNode)
-    const notePickList: vscode.QuickPickItem[] = [];
-    const category = indexContent["categorys"][cIdx.toString()]
-    const notes: any[] = category["notes"]
-    for (const nId in notes) {
-        notePickList.push({ label: notes[nId].i.toString(), description: nId.toString() });
+        const indexContent = genNodeIndexObj(indexFilePath);
+        indexContent["labels"].push(labelName);
+        vscode.window.showInformationMessage(JSON.stringify(indexContent))
+
+        fs.mkdirSync(path.join(indexFilePath, labelName))
+        fs.writeFileSync(path.join(indexFilePath, labelName, ".index.json"), JSON.stringify({ labels: [], categorys: [], seq: 1 }), { encoding: "UTF-8" })
+
+        fs.writeFileSync(indexFilePath + "/.index.json", JSON.stringify(indexContent), { encoding: "UTF-8" })
+
+        vscode.window.registerTreeDataProvider('vsnote', m);
+    });
+}
+
+function deleteNoteDisposable(rootFsPath): vscode.Disposable {
+    const commandHandler = async (noteNode, cIdx: number) => {
+        const indexContent = genNodeIndexObj(noteNode)
+        const notePickList: vscode.QuickPickItem[] = [];
+        const category = indexContent["categorys"][cIdx.toString()]
+        const notes: any[] = category["notes"]
+        for (const nId in notes) {
+            notePickList.push({ label: notes[nId].i.toString(), description: nId.toString() });
+        }
+        const noteId = await vscode.window.showQuickPick(notePickList);
+
+        deleteFolderRecursive(path.join(noteNode, `n-${noteId.label}`))
+
+        notes.splice(Number(noteId.description), 1)
+        fs.writeFileSync(path.join(noteNode, ".index.json"), JSON.stringify(indexContent), { encoding: "UTF-8" })
+        vscode.commands.executeCommand('extension.showVscodeNotePreview', noteNode).then(success => { }, reason => vscode.window.showErrorMessage(reason))
     }
-    const noteId = await vscode.window.showQuickPick(notePickList);
-
-    deleteFolderRecursive(path.join(noteNode, `n-${noteId.label}`))
-
-    notes.splice(Number(noteId.description), 1)
-    fs.writeFileSync(path.join(noteNode, ".index.json"), JSON.stringify(indexContent), { encoding: "UTF-8" })
-    vscode.commands.executeCommand('extension.showVscodeNotePreview', noteNode).then(success => { }, reason => vscode.window.showErrorMessage(reason))
-});
+    return vscode.commands.registerCommand('extension.deleteNote', commandHandler);
+}
 
 const addCategoryDisposable = (rootPath) => vscode.commands.registerCommand('extension.addCategory', async (noteNode: NoteNode) => {
     const indexFilePath = path.join(rootPath, noteNode.parent, ".index.json")
@@ -61,6 +83,8 @@ const addCategoryDisposable = (rootPath) => vscode.commands.registerCommand('ext
 });
 
 const addNoteDisposable = vscode.commands.registerCommand('extension.addNote', async (nodePath, cIdx) => {
+    const indexFilePath = path.join(nodePath, ".index.json")
+
     const itemPickList: vscode.QuickPickItem[] = [];
     itemPickList.push({ label: 'Doc,File', description: '' });
     itemPickList.push({ label: 'Doc', description: '' });
@@ -68,7 +92,7 @@ const addNoteDisposable = vscode.commands.registerCommand('extension.addNote', a
     itemPickList.push({ label: 'None', description: '' });
     let modeChoice = await vscode.window.showQuickPick(itemPickList);
 
-    const indexContent = getNodeIndexObj(nodePath)
+    const indexContent = genNodeIndexObj(nodePath)
     let seq = indexContent["seq"]
 
     let note;
@@ -96,4 +120,4 @@ const addNoteDisposable = vscode.commands.registerCommand('extension.addNote', a
     vscode.commands.executeCommand('extension.showVscodeNotePreview', nodePath).then(success => { }, reason => vscode.window.showErrorMessage(reason))
 })
 
-export { addNoteDisposable, addCategoryDisposable, deleteNoteDisposable, modifyNoteDisposable }
+export { addNoteDisposable, addCategoryDisposable, deleteNoteDisposable, modifyNoteDisposable, addLabelDisposable }

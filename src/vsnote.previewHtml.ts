@@ -3,10 +3,10 @@ import * as path from 'path';
 
 import * as vscode from 'vscode';
 
-import { generateHtmlView } from './note.htmlGenerator'
+import { generateHtmlView } from './vsnote.htmlGenerator'
 
 class TextDocumentContentProvider implements vscode.TextDocumentContentProvider {
-    
+
     constructor(private uri: vscode.Uri) { }
 
     private _onDidChange = new vscode.EventEmitter<vscode.Uri>();

@@ -1,7 +1,7 @@
 {
   "name": "vscode-note",
   "displayName": "vscode-note",
-  "description": "note by file",
+  "description": "save note by json file",
   "version": "0.0.3",
   "publisher": "shinhwagk",
   "engines": {
@@ -22,16 +22,32 @@
     "onCommand:extension.addCategory",
     "onCommand:extension.modifyCategory",
     "onCommand:extension.deleteCategory",
-    "onView:note",
+    "onView:vsnote",
     "onCommand:extension.sayHello"
   ],
   "main": "./out/extension",
   "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "VsNote",
+      "properties": {
+        "vsnote.switch": {
+          "type": "boolean",
+          "default": true,
+          "scope": "resource",
+          "description": "......"
+        }
+      }
+    },
     "menus": {
       "view/item/context": [
         {
           "command": "extension.addCategory",
-          "when": "view == note"
+          "when": "view == vsnote"
+        },
+        {
+          "command": "extension.addLabel",
+          "when": "view == vsnote"
         }
       ]
     },
@@ -46,14 +62,18 @@
       },
       {
         "command": "extension.addCategory",
-        "title": "note: add category"
+        "title": "vsnote: add Category"
+      },
+      {
+        "command": "extension.addLabel",
+        "title": "vsnote: add Label"
       }
     ],
     "views": {
       "explorer": [
         {
-          "id": "note",
-          "name": "note"
+          "id": "vsnote",
+          "name": "vsnote"
         }
       ]
     }
@@ -67,10 +87,10 @@
   },
   "devDependencies": {
     "@types/mocha": "^2.2.44",
-    "@types/node": "^8.0.53",
+    "@types/node": "^8.5.2",
     "awesome-typescript-loader": "^3.4.1",
     "typescript": "^2.6.2",
-    "vscode": "^1.1.9"
+    "vscode": "^1.1.10"
   },
   "dependencies": {}
 }

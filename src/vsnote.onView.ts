@@ -59,4 +59,8 @@ class NoteTreeModle {
 
 const fileToJson: <T>(filePath: string) => T = (filePath: string) => JSON.parse(fs.readFileSync(filePath, "utf-8"));
 
-export const makeNoteProvider: (rootPath: string) => vscode.TreeDataProvider<NoteNode> = (rootPath) => new NoteTreeProvider(rootPath);
+function makeNoteProvider(rootPath: string) {
+  return new NoteTreeProvider(rootPath);
+}
+
+export { makeNoteProvider }
