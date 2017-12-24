@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { commandNameShowVsNotePreview } from './vsnote.setting'
+
 class NoteTreeProvider implements vscode.TreeDataProvider<NoteNode> {
 
   private noteTreeModle: NoteTreeModle;
@@ -51,7 +53,7 @@ class NoteTreeModle {
     return {
       label: element.label,
       collapsibleState: element.child ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
-      command: { title: "Show Vscode Note", command: "extension.showVscodeNotePreview", arguments: [indexPath] }
+      command: { title: "Show Vscode Note", command: commandNameShowVsNotePreview, arguments: [indexPath] }
     };
   }
 

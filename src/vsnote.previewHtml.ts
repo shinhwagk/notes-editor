@@ -3,7 +3,8 @@ import * as path from 'path';
 
 import * as vscode from 'vscode';
 
-import { generateHtmlView } from './vsnote.htmlGenerator'
+import { genHtmlView } from './vsnote.htmlGenerator'
+import { commandNameShowVsNotePreview } from './vsnote.setting';
 
 class TextDocumentContentProvider implements vscode.TextDocumentContentProvider {
 
@@ -26,7 +27,7 @@ class TextDocumentContentProvider implements vscode.TextDocumentContentProvider 
     }
 
     async provideTextDocumentContent(uri: vscode.Uri, token: vscode.CancellationToken): Promise<string> {
-        return generateHtmlView(this.nodePath);
+        return genHtmlView(this.nodePath);
     }
 }
 
@@ -37,5 +38,5 @@ vscode.workspace.registerTextDocumentContentProvider("vscode-note", provider);
 vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.One, "vscode-note")
     .then(success => { }, reason => vscode.window.showErrorMessage(reason))
 
-export const commandShowVscodeNote = vscode.commands.registerCommand('extension.showVscodeNotePreview', (nodePath) => provider.update(nodePath));
+export const commandShowVscodeNote = vscode.commands.registerCommand(commandNameShowVsNotePreview, (nodePath) => provider.update(nodePath));
 

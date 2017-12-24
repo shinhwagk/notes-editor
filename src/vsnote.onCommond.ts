@@ -5,26 +5,35 @@ import * as vscode from 'vscode';
 
 import { deleteFolderRecursive, genNodeIndexObj } from './vsnote.lib'
 import { NoteNode } from './vsnote.onView';
+import { commandNameShowVsNotePreview } from './vsnote.setting';
 
 const modifyNoteDisposable = vscode.commands.registerCommand('extension.modifyNote', async (nodeFsPath, cIdx) => {
     const indexContent = genNodeIndexObj(nodeFsPath)
 
     const category = indexContent["categorys"][cIdx]
-    // const cols = category["cols"]
 
-    // for (let i = 1; i <= cols; i++) {
-    //     const uri = vscode.Uri.file(path.join(nodeFsPath, `n-1`, i.toString()))
-    //     vscode.workspace.openTextDocument(uri).then(p => vscode.window.showTextDocument(p))
-    // }
+
+    const notePickList: vscode.QuickPickItem[] = [];
+    const notes: any[] = category["notes"]
+    for (const nId in notes) {
+        notePickList.push({ label: notes[nId].i.toString(), description: nId.toString() });
+    }
+
+    const noteId = await vscode.window.showQuickPick(notePickList);
+
+    const cols = category["cols"]
+    for (let i = 1; i <= cols; i++) {
+        const uri = vscode.Uri.file(path.join(nodeFsPath, `n-${noteId.description}`, i.toString()))
+        vscode.workspace.openTextDocument
+        vscode.window.showTextDocument(uri, { preview: false, viewColumn: vscode.ViewColumn.Two })
+    }
 });
 // // export const disposable2 = vscode.commands.registerCommand('extension.deleteNote', (nodePath) => nodePath);
 
 // export const disposable13 = vscode.commands.registerCommand('extension.modifyCategory', (nodePath) => nodePath);
 // export const disposable23 = vscode.commands.registerCommand('extension.deleteCategory', (nodePath) => nodePath);
 
-// vscode.commands.registerCommand('extension.addLabel', (nodePath) => nodePath);
-// vscode.commands.registerCommand('extension.modifyLabel', (nodePath) => nodePath);
-// vscode.commands.registerCommand('extension.deleteLabel', (nodePath) => nodePath);
+
 
 function addLabelDisposable(rootFsPath, m) {
     return vscode.commands.registerCommand('extension.addLabel', async (noteNode: NoteNode) => {
@@ -61,7 +70,7 @@ function deleteNoteDisposable(rootFsPath): vscode.Disposable {
 
         notes.splice(Number(noteId.description), 1)
         fs.writeFileSync(path.join(noteNode, ".index.json"), JSON.stringify(indexContent), { encoding: "UTF-8" })
-        vscode.commands.executeCommand('extension.showVscodeNotePreview', noteNode).then(success => { }, reason => vscode.window.showErrorMessage(reason))
+        refreshPreview(noteNode)
     }
     return vscode.commands.registerCommand('extension.deleteNote', commandHandler);
 }
@@ -78,46 +87,51 @@ const addCategoryDisposable = (rootPath) => vscode.commands.registerCommand('ext
     const indexContent = JSON.parse(fs.readFileSync(indexFilePath, "UTF-8"))
     indexContent["categorys"].push({ name: categoryName, cols: Number(categoryColNumber.label), notes: [] })
     fs.writeFileSync(indexFilePath, JSON.stringify(indexContent), { encoding: "UTF-8" })
-    vscode.commands.executeCommand('extension.showVscodeNotePreview', noteNode.parent).then(success => { }, reason => vscode.window.showErrorMessage(reason))
-
+    refreshPreview(noteNode.parent)
 });
 
-const addNoteDisposable = vscode.commands.registerCommand('extension.addNote', async (nodePath, cIdx) => {
-    const indexFilePath = path.join(nodePath, ".index.json")
+function addNoteDisposable(): vscode.Disposable {
+    const commandHandler = async (nodePath, cIdx) => {
+        const indexFilePath = path.join(nodePath, ".index.json")
+        const itemPickList: vscode.QuickPickItem[] = [];
+        itemPickList.push({ label: 'Doc,File', description: '' });
+        itemPickList.push({ label: 'Doc', description: '' });
+        itemPickList.push({ label: 'File', description: '' });
+        itemPickList.push({ label: 'None', description: '' });
+        let modeChoice = await vscode.window.showQuickPick(itemPickList);
 
-    const itemPickList: vscode.QuickPickItem[] = [];
-    itemPickList.push({ label: 'Doc,File', description: '' });
-    itemPickList.push({ label: 'Doc', description: '' });
-    itemPickList.push({ label: 'File', description: '' });
-    itemPickList.push({ label: 'None', description: '' });
-    let modeChoice = await vscode.window.showQuickPick(itemPickList);
+        const indexContent = genNodeIndexObj(nodePath)
+        let seq = indexContent["seq"]
 
-    const indexContent = genNodeIndexObj(nodePath)
-    let seq = indexContent["seq"]
+        let note;
+        switch (modeChoice.label) {
+            case 'Doc,File': note = { d: 1, f: 1, i: seq }; break;
+            case 'Doc': note = { d: 1, f: 0, i: seq }; break;
+            case 'File': note = { d: 0, f: 1, i: seq }; break;
+            default: note = { d: 0, f: 0, i: seq };
+        }
 
-    let note;
-    switch (modeChoice.label) {
-        case 'Doc,File': note = { d: 1, f: 1, i: seq }; break;
-        case 'Doc': note = { d: 1, f: 0, i: seq }; break;
-        case 'File': note = { d: 0, f: 1, i: seq }; break;
-        default: note = { d: 0, f: 0, i: seq };
+        const category = indexContent["categorys"][cIdx]
+        const cols: number = category["cols"]
+        const notes = category["notes"]
+
+        const newDirPath = path.join(nodePath, `n-${seq}`)
+        if (!fs.existsSync(newDirPath)) {
+            fs.mkdirSync(newDirPath)
+        }
+        indexContent["seq"] = seq + 1
+        for (let i = 1; i <= cols; i++) {
+            fs.writeFileSync(path.join(newDirPath, i.toString()), "", "UTF-8")
+        }
+        notes.push(note)
+        fs.writeFileSync(indexFilePath, JSON.stringify(indexContent), { encoding: "UTF-8" })
+        refreshPreview(nodePath)
     }
+    return vscode.commands.registerCommand('extension.addNote', commandHandler);
+}
 
-    const category = indexContent["categorys"][cIdx]
-    const cols: number = category["cols"]
-    const notes = category["notes"]
-
-    const newDirPath = path.join(nodePath, `n-${seq}`)
-    if (!fs.existsSync(newDirPath)) {
-        fs.mkdirSync(newDirPath)
-    }
-    indexContent["seq"] = seq + 1
-    for (let i = 1; i <= cols; i++) {
-        fs.writeFileSync(path.join(newDirPath, i.toString()), "", "UTF-8")
-    }
-    notes.push(note)
-    fs.writeFileSync(indexFilePath, JSON.stringify(indexContent), { encoding: "UTF-8" })
-    vscode.commands.executeCommand('extension.showVscodeNotePreview', nodePath).then(success => { }, reason => vscode.window.showErrorMessage(reason))
-})
+function refreshPreview(nodeFsPath) {
+    vscode.commands.executeCommand(commandNameShowVsNotePreview, nodeFsPath).then(success => { }, reason => vscode.window.showErrorMessage(reason))
+}
 
 export { addNoteDisposable, addCategoryDisposable, deleteNoteDisposable, modifyNoteDisposable, addLabelDisposable }

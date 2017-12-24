@@ -13,7 +13,7 @@ export function activate(context: vscode.ExtensionContext) {
  
     vscode.window.registerTreeDataProvider('vsnote', p);
     context.subscriptions.push(commandShowVscodeNote);
-    context.subscriptions.push(addNoteDisposable);
+    context.subscriptions.push(addNoteDisposable());
     context.subscriptions.push(addLabelDisposable(rootFsPath, p));
     context.subscriptions.push(addCategoryDisposable(rootFsPath));
     context.subscriptions.push(deleteNoteDisposable(rootFsPath));
