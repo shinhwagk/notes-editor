@@ -18,8 +18,15 @@ const genNoteFileView = (file) => {
 }
 
 const genNoteHtml = (cols: number) => (props: NoteNote) => {
-  const v = (x: string) => fs.readFileSync(path.join(gloglpath, `n-${props.i}`, x), "utf-8")
-  return '<tr>' + `<td style="width:15px">${props.i}</td>` + Array.from(Array.from({ length: cols }).keys()).map(idx => `<td><pre>${v((idx + 1).toString())}</pre></td>`).join("") + '</tr>'
+  const func = (n: string) => fs.readFileSync(path.join(gloglpath, `n-${props.i}`, n), "utf-8")
+
+  let noteHtml = '<tr>'
+  noteHtml += `<td style="width:15px"><a>${props.i}</a></td>`
+  for (let i = 0; i < cols; i++) {
+    noteHtml += `<td><pre>${func((i + 1).toString())}</pre></td>`
+  }
+  noteHtml += '</tr>'
+  return noteHtml
 }
 
 const genAddNoteUi = (nodeFsPath, cIdx: number) => {
