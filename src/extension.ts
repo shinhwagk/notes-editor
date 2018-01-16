@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 
 import { makeNoteProvider } from './vsnote.onView';
 import { commandShowVscodeNote } from './vsnote.previewHtml';
-import {  , addCategoryDisposable,  , addLabelDisposable } from './vsnote.onCommond';
+import { addCategoryDisposable, addLabelDisposable } from './vsnote.onCommond';
 import { activateRegister } from './vsnote.onRegister'
 // import { getWorkspaceConfiguration } from './vsnote.setting';
 
