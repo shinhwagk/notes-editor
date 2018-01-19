@@ -29,6 +29,12 @@ export const modifyNoteCommandHandler = async (nodeFsPath, cIdx) => {
         vscode.workspace.openTextDocument
         vscode.window.showTextDocument(uri, { preview: false, viewColumn: vscode.ViewColumn.Two })
     }
+    const note = notes[Number(noteId.label)]
+    if (note["d"]) {
+        const uri = vscode.Uri.file(path.join(nodeFsPath, `n-${noteId.label}`, "d", "README.md"))
+        // vscode.workspace.openTextDocument
+        vscode.window.showTextDocument(uri, { preview: false, viewColumn: vscode.ViewColumn.Two })
+    }
 }
 
 function addLabelDisposable(rootFsPath, m) {

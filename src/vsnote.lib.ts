@@ -15,7 +15,7 @@ function deleteFolderRecursive(p): void {
     }
 };
 
-function genNodeIndexObj(nodeFsPath): string {
+function genNodeIndexObj(nodeFsPath) {
     const indexFileFsPath = path.join(nodeFsPath, ".index.json")
     return JSON.parse(fs.readFileSync(indexFileFsPath, "UTF-8"))
 }
