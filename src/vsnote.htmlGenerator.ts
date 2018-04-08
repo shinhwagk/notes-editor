@@ -25,12 +25,12 @@ const genNoteHtml = (cols: number) => (props: NoteNote) => {
   for (let i = 0; i < cols; i++) {
     noteHtml += `<td><pre>${func((i + 1).toString())}</pre></td>`
   }
-  noteHtml += '</tr>'
+  noteHtml += `</tr>`
   return noteHtml
 }
 
 const genAddNoteUi = (nodeFsPath, cIdx: number) => {
-  const addUi = `<a style="color:red" href="${genHtmlHref('addNote', nodeFsPath, cIdx)}">add</a>`
+  const addUi = `<a style="color:red" href="${genHtmlHref('add.note', nodeFsPath, cIdx)}">add</a>`
   const delUi = `<a style="color:red" href="${genHtmlHref('deleteNote', nodeFsPath, cIdx)}">del</a>`
   const updUi = `<a style="color:red" href="${genHtmlHref('modifyNote', nodeFsPath, cIdx)}">update</a>`
   return "&nbsp;" + addUi + "&nbsp;" + updUi + "&nbsp;" + delUi

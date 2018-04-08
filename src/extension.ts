@@ -1,21 +1,37 @@
+import * as path from "path";
+
 import * as vscode from 'vscode';
 
-import { makeNoteProvider } from './vsnote.onView';
+import { NoteTreeProvider } from './vsnote.onView';
 import { commandShowVscodeNote } from './vsnote.previewHtml';
 import { addCategoryDisposable, addLabelDisposable } from './vsnote.onCommond';
 import { activateRegister } from './vsnote.onRegister'
-// import { getWorkspaceConfiguration } from './vsnote.setting';
 
-export function activate(context: vscode.ExtensionContext) {
-    // vscode.window.showInformationMessage(vscode.workspace.getConfiguration('vsnote').get<boolean>('switch').toString());
-    const rootFsPath: string = vscode.workspace.workspaceFolders[0].uri.fsPath;
+export async function activate(context: vscode.ExtensionContext) {
+    const workspaceFsPath: string = vscode.workspace.workspaceFolders[0].uri.fsPath;
 
-    const p = makeNoteProvider(rootFsPath)
+    const vsnoteRootIndexPath = path.join(workspaceFsPath, ".index.json")
+    const userRootIndexPath = vscode.workspace.getConfiguration("vsnote").get("rootPath")
+    if (vsnoteRootIndexPath === userRootIndexPath) {
+        const p = new NoteTreeProvider();
 
-    vscode.window.registerTreeDataProvider('vsnote', p);
-    context.subscriptions.push(commandShowVscodeNote);
-    context.subscriptions.push(addLabelDisposable(rootFsPath, p));
-    context.subscriptions.push(addCategoryDisposable(rootFsPath));
+        vscode.window.registerTreeDataProvider('vsnote', p);
+        context.subscriptions.push(commandShowVscodeNote);
+        context.subscriptions.push(addLabelDisposable(workspaceFsPath, p));
+        context.subscriptions.push(addCategoryDisposable(workspaceFsPath));
 
-    activateRegister(rootFsPath, context)
+        activateRegister(workspaceFsPath, context)
+    } else {
+        vscode.window.showInformationMessage(vsnoteRootIndexPath)
+        vscode.window.showInformationMessage(vsnoteRootIndexPath)
+        vscode.window.showInformationMessage("no vscode workspace.")
+    }
+
+    let disposable = vscode.commands.registerCommand('extension.openfolder', () => {
+        vscode.window.showInformationMessage('Hello World!');
+        let uri = vscode.Uri.parse('c:\\');
+        vscode.commands.executeCommand('vscode.openFolder', uri, true)
+    });
+
+    context.subscriptions.push(disposable);
 }

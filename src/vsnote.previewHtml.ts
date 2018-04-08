@@ -38,5 +38,5 @@ vscode.workspace.registerTextDocumentContentProvider("vscode-note", provider);
 vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.One, "vscode-note")
     .then(success => { }, reason => vscode.window.showErrorMessage(reason))
 
-export const commandShowVscodeNote = vscode.commands.registerCommand(commandNameShowVsNotePreview, (nodePath) => provider.update(nodePath));
+export const commandShowVscodeNote: vscode.Disposable = vscode.commands.registerCommand(commandNameShowVsNotePreview, (nodePath) => provider.update(nodePath));
 

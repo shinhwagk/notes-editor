@@ -16,7 +16,7 @@
   },
   "activationEvents": [
     "onCommand:extension.showVscodeNotePreview",
-    "onCommand:extension.addNote",
+    "onCommand:extension.add.note",
     "onCommand:extension.modifyNote",
     "onCommand:extension.deleteNote",
     "onCommand:extension.addCategory",
@@ -29,44 +29,56 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "VsNote",
+      "title": "vsnote",
       "properties": {
-        "vsnote.switch": {
-          "type": "boolean",
-          "default": true,
-          "scope": "resource",
+        "vsnote.rootPath": {
+          "type": "string",
+          "default": null,
           "description": "......"
         }
       }
     },
     "menus": {
+      "view/title": [
+        {
+          "command": "extension.addLabel",
+          "when": "view == vsnote",
+          "group": "vsnote"
+        }
+      ],
       "view/item/context": [
         {
           "command": "extension.addCategory",
-          "when": "view == vsnote"
+          "when": "view == vsnote",
+          "group": "vsnote"
         },
         {
           "command": "extension.addLabel",
-          "when": "view == vsnote"
+          "when": "view == vsnote",
+          "group": "vsnote"
         }
       ]
     },
     "commands": [
       {
+        "command": "extension.openfolder",
+        "title": "test open folder"
+      },
+      {
         "command": "extension.showVsNotePreview",
         "title": "Show Vscode Note"
       },
       {
-        "command": "extension.addNote",
+        "command": "extension.add.note",
         "title": "add vsnote"
       },
       {
         "command": "extension.addCategory",
-        "title": "vsnote: add Category"
+        "title": "vsnote: add category"
       },
       {
         "command": "extension.addLabel",
-        "title": "vsnote: add Label"
+        "title": "vsnote: add label"
       }
     ],
     "views": {

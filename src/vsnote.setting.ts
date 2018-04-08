@@ -7,4 +7,4 @@ import { WorkspaceConfiguration, window, workspace } from 'vscode';
 
 const viewId: string = "vsnote";
 export const commandNameShowVsNotePreview: string = "extension.showVsNotePreview";
-export const commandNameaddNote: string = "extension.addNote";
+export const commandNameaddNote: string = "extension.add.note";

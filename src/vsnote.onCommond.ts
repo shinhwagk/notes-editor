@@ -37,13 +37,15 @@ export const modifyNoteCommandHandler = async (nodeFsPath, cIdx) => {
     }
 }
 
-function addLabelDisposable(rootFsPath, m) {
-    return vscode.commands.registerCommand('extension.addLabel', async (noteNode: NoteNode) => {
-        const indexFilePath = path.join(rootFsPath, noteNode.parent)
-        vscode.window.showInformationMessage(indexFilePath)
+function addLabelDisposable(rootFsPath: string, m) {
+    return vscode.commands.registerCommand('extension.addLabel', async (noteNode?) => {
+        let uri = vscode.workspace.workspaceFolders[0].uri;
+        const vo = await vscode.commands.executeCommand('vscode.openFolder', uri, true);
+
+        const indexFilePath = noteNode ? path.join(rootFsPath, noteNode.parent) : rootFsPath
 
         const labelName = await vscode.window.showInputBox();
-
+        if (!labelName) { return }
         const indexContent = genNodeIndexObj(indexFilePath);
         indexContent["labels"].push(labelName);
         vscode.window.showInformationMessage(JSON.stringify(indexContent))
@@ -101,8 +103,6 @@ export const addNoteCommandHandler = async (nodePath, cIdx) => {
 
     const indexContent = genNodeIndexObj(nodePath)
     let seq = indexContent["seq"]
-
-
 
     const category = indexContent["categorys"][cIdx]
     const cols: number = category["cols"]

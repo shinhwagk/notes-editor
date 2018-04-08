@@ -9,7 +9,8 @@ class NoteTreeProvider implements vscode.TreeDataProvider<NoteNode> {
 
   private noteTreeModle: NoteTreeModle;
 
-  constructor(private workspaceRoot: string) {
+  constructor() {
+    const workspaceRoot: string = vscode.workspace.workspaceFolders[0].uri.fsPath;
     this.noteTreeModle = new NoteTreeModle(workspaceRoot)
   }
 
@@ -62,8 +63,8 @@ class NoteTreeModle {
 
 const fileToJson: <T>(filePath: string) => T = (filePath: string) => JSON.parse(fs.readFileSync(filePath, "utf-8"));
 
-function makeNoteProvider(rootPath: string) {
-  return new NoteTreeProvider(rootPath);
-}
+// function makeNoteProvider(rootPath: string) {
+//   return new NoteTreeProvider(rootPath);
+// }
 
-export { makeNoteProvider }
+export { NoteTreeProvider }
