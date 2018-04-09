@@ -1,10 +1,13 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 
-function deleteFolderRecursive(p): void {
+import { IIndex } from "./vsnote.note";
+import { indexFile } from "./vsnote.settings";
+
+export function deleteFolderRecursive(p): void {
     if (fs.existsSync(p)) {
         fs.readdirSync(p).forEach((file, index) => {
-            var curPath = path.join(p, file);
+            const curPath = path.join(p, file);
             if (fs.lstatSync(curPath).isDirectory()) {
                 deleteFolderRecursive(curPath);
             } else {
@@ -13,11 +16,24 @@ function deleteFolderRecursive(p): void {
         });
         fs.rmdirSync(p);
     }
-};
-
-function genNodeIndexObj(nodeFsPath) {
-    const indexFileFsPath = path.join(nodeFsPath, ".index.json")
-    return JSON.parse(fs.readFileSync(indexFileFsPath, "UTF-8"))
 }
 
-export { deleteFolderRecursive, genNodeIndexObj }
+// delete futurity
+export function genNodeIdxObj(nodePath?: string): IIndex {
+    if (nodePath) {
+        const _idxFilePath = path.join(nodePath, indexFile);
+        return JSON.parse(fs.readFileSync(_idxFilePath, "UTF-8")) as IIndex;
+    } else {
+        return emptyNodeIdxObj;
+    }
+}
+
+// export function genIdxObj(filePath): INoteIndex {
+//     return jsonFileToObj<INoteIndex>(filePath);
+// }
+
+export function jsonFileToObj<T>(filePath: string): T {
+    return JSON.parse(fs.readFileSync(filePath, "utf-8")) as T;
+}
+
+export const emptyNodeIdxObj = { labels: [], categorys: [], seq: 1 } as IIndex;

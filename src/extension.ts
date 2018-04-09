@@ -1,37 +1,31 @@
 import * as path from "path";
 
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
-import { NoteTreeProvider } from './vsnote.onView';
-import { commandShowVscodeNote } from './vsnote.previewHtml';
-import { addCategoryDisposable, addLabelDisposable } from './vsnote.onCommond';
-import { activateRegister } from './vsnote.onRegister'
+import * as hanlders from "./vsnote.onCommondHandlers";
+import { commandShowVscodeNote } from "./vsnote.previewHtml";
+import { NoteTreeProvider } from "./vsnote.view.onView";
 
 export async function activate(context: vscode.ExtensionContext) {
-    const workspaceFsPath: string = vscode.workspace.workspaceFolders[0].uri.fsPath;
 
-    const vsnoteRootIndexPath = path.join(workspaceFsPath, ".index.json")
-    const userRootIndexPath = vscode.workspace.getConfiguration("vsnote").get("rootPath")
-    if (vsnoteRootIndexPath === userRootIndexPath) {
-        const p = new NoteTreeProvider();
+    const p = new NoteTreeProvider();
 
-        vscode.window.registerTreeDataProvider('vsnote', p);
-        context.subscriptions.push(commandShowVscodeNote);
-        context.subscriptions.push(addLabelDisposable(workspaceFsPath, p));
-        context.subscriptions.push(addCategoryDisposable(workspaceFsPath));
+    vscode.window.registerTreeDataProvider("vsnote", p);
+    context.subscriptions.push(commandShowVscodeNote());
 
-        activateRegister(workspaceFsPath, context)
-    } else {
-        vscode.window.showInformationMessage(vsnoteRootIndexPath)
-        vscode.window.showInformationMessage(vsnoteRootIndexPath)
-        vscode.window.showInformationMessage("no vscode workspace.")
+    const handlers = [
+        ["extension.delete.note", hanlders.delete_note_command_handler],
+        ["extension.update.note", hanlders.update_note_command_handler],
+        ["extension.insert.note", hanlders.insert_note_command_handler],
+        ["extension.delete.category", hanlders.delete_category_command_handler],
+        ["extension.update.category", hanlders.update_category_command_handler],
+        ["extension.insert.category", hanlders.insert_category_command_handler],
+        ["extension.delete.label", hanlders.delete_label_command_handler],
+        ["extension.update.label", hanlders.update_label_command_handler],
+        ["extension.insert.label", hanlders.insert_label_command_handler],
+    ];
+
+    for (const [name, handler] of handlers) {
+        context.subscriptions.push(vscode.commands.registerCommand(name, handler));
     }
-
-    let disposable = vscode.commands.registerCommand('extension.openfolder', () => {
-        vscode.window.showInformationMessage('Hello World!');
-        let uri = vscode.Uri.parse('c:\\');
-        vscode.commands.executeCommand('vscode.openFolder', uri, true)
-    });
-
-    context.subscriptions.push(disposable);
 }
