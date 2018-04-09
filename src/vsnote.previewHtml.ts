@@ -3,10 +3,10 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { ViewHtmlNote } from "./vsnote.htmlGenerator";
+import { HtmlNote } from "./vsnote.htmlGenerator";
 import { commandNameShowVsNotePreview } from "./vsnote.settings";
 
-class TextDocumentContentProvider implements vscode.TextDocumentContentProvider {
+class HtmlDocumentContentProvider implements vscode.TextDocumentContentProvider {
 
     public _onDidChange = new vscode.EventEmitter<vscode.Uri>();
 
@@ -24,12 +24,12 @@ class TextDocumentContentProvider implements vscode.TextDocumentContentProvider 
     }
 
     public async provideTextDocumentContent(uri: vscode.Uri, token: vscode.CancellationToken): Promise<string> {
-        return new ViewHtmlNote(this.nodePath).htmlView();
+        return new HtmlNote(this.nodePath).generateHTML();
     }
 }
 
 const previewUri = vscode.Uri.parse("vscode-note://note/content");
-const provider = new TextDocumentContentProvider(previewUri);
+const provider = new HtmlDocumentContentProvider(previewUri);
 vscode.workspace.registerTextDocumentContentProvider("vscode-note", provider);
 
 vscode.commands.executeCommand("vscode.previewHtml", previewUri, vscode.ViewColumn.One, "vscode-note")

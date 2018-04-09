@@ -19,7 +19,7 @@ export function deleteFolderRecursive(p): void {
 }
 
 // delete futurity
-export function genNodeIdxObj(nodePath?: string): IIndex {
+export function genNoteMate(nodePath?: string): IIndex {
     if (nodePath) {
         const _idxFilePath = path.join(nodePath, indexFile);
         return JSON.parse(fs.readFileSync(_idxFilePath, "UTF-8")) as IIndex;

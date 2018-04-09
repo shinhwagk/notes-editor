@@ -1,5 +1,5 @@
 export interface INoteNode {
-  parent: string;
+  parent?: string;
   label: string;
   child?: boolean;
 }

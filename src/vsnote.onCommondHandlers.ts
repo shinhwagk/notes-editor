@@ -3,13 +3,13 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { deleteFolderRecursive, genNodeIdxObj } from "./vsnote.lib";
+import { deleteFolderRecursive, genNoteMate } from "./vsnote.lib";
 import { IIndex } from "./vsnote.note";
 import { commandNameShowVsNotePreview, workspaceRootFsPath } from "./vsnote.settings";
-import { INoteNode } from "./vsnote.view.noteNode";
+import { INoteNode } from "./vsnote.view.node";
 
 export const update_note_command_handler = async (nodeFsPath, cIdx) => {
-    const indexContent = genNodeIdxObj(nodeFsPath);
+    const indexContent = genNoteMate(nodeFsPath);
 
     const category = indexContent.categorys[cIdx];
 
@@ -41,7 +41,7 @@ export const insert_label_handler = (m) => async (noteNode?: INoteNode) => {
 
     const _label: string = await vscode.window.showInputBox();
     if (!_label) { return; }
-    const _idxObj = genNodeIdxObj(_idxFile);
+    const _idxObj = genNoteMate(_idxFile);
     _idxObj.labels.push(_label);
     vscode.window.showInformationMessage(JSON.stringify(_idxObj));
 
@@ -56,11 +56,11 @@ export const insert_label_handler = (m) => async (noteNode?: INoteNode) => {
 };
 
 export const delete_note_command_handler = async (noteNode, cIdx: number) => {
-    const nodeMeta = genNodeIdxObj(noteNode);
+    const nodeMeta = genNoteMate(noteNode);
     const notePickList: vscode.QuickPickItem[] = [];
     const category = nodeMeta.categorys[cIdx];
     const notes = category.notes;
-    notes.forEach((note, idx) => notePickList.push({ label: notes[idx].i.toString(), description: idx.toString() }))
+    notes.forEach((note, idx) => notePickList.push({ label: notes[idx].i.toString(), description: idx.toString() }));
 
     const noteId = await vscode.window.showQuickPick(notePickList);
 
@@ -95,7 +95,7 @@ export const insert_note_command_handler = async (nodePath, cIdx) => {
     itemPickList.push({ label: "None", description: "" });
     const modeChoice = await vscode.window.showQuickPick(itemPickList);
 
-    const nodeMeta: IIndex = genNodeIdxObj(nodePath);
+    const nodeMeta: IIndex = genNoteMate(nodePath);
     const seq = nodeMeta.seq;
 
     const category = nodeMeta.categorys[cIdx];

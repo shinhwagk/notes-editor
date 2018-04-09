@@ -3,37 +3,40 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { jsonFileToObj } from "./vsnote.lib";
+import { genNoteMate, jsonFileToObj } from "./vsnote.lib";
+import { IIndex } from "./vsnote.note";
 import { commandNameShowVsNotePreview } from "./vsnote.settings";
-import { INoteNode } from "./vsnote.view.noteNode";
+import { INoteNode } from "./vsnote.view.node";
 
 export class NoteTreeModle {
   private workspaceRoot: string = vscode.workspace.workspaceFolders[0].uri.fsPath;
 
-  private indexName = ".index.json";
-
   public async getChildren(element?: INoteNode): Promise<INoteNode[]> {
-    return this.genNodeTree(element.parent);
+    return element ? this.genNodeTree(element.parent) : this.genNodeTree();
   }
 
   public getTreeItem(element: INoteNode): vscode.TreeItem {
+    vscode.window.showInformationMessage(JSON.stringify(element));
+    console.info(JSON.stringify(element));
     const indexPath = this.genNodeFsPath(this.genNodePath(element.parent));
     return {
-      collapsibleState: element.child ? 1 : 0, // vscode.TreeItemCollapsibleState
+      collapsibleState: element.child ? 1 : 0,
+      // vscode.TreeItemCollapsibleState
       command: { title: "Show Vscode Note", command: commandNameShowVsNotePreview, arguments: [indexPath] },
       label: element.label,
     };
   }
 
   private genNodeTree(parent?: string): INoteNode[] {
-    const indexPath = this.genIndexPath(parent).labels.map((label: string) => this.genChildNoteNode(label, parent));
-    return jsonFileToObj(indexPath) as INoteNode[];
+    const indexPath = this.genIndexPath(parent);
+    const noteNodes = genNoteMate(indexPath).labels.map((label: string) => this.genChildNode(label, parent));
+    return noteNodes;
   }
 
-  private genIndexPath(nodePath?: string) {
-    const paths = [this.workspaceRoot, this.indexName];
-    if (nodePath) {
-      paths.splice(1, 0, nodePath);
+  private genIndexPath(parent?: string) {
+    const paths = [this.workspaceRoot];
+    if (parent) {
+      paths.push(parent);
     }
     return path.join(...paths);
   }
@@ -46,13 +49,13 @@ export class NoteTreeModle {
     return path.join(this.workspaceRoot, nodePath);
   }
 
-  private genChildNoteNode(label: string, parent?: string) {
-    const parentPath = this.genNodePath(label, parent);
+  private genChildNode(label: string, parent?: string) {
+    const parentPath = parent || "";
     const indexPath = this.genIndexPath(parentPath);
     return { parent: parentPath, label, child: this.existChildCheck(indexPath) };
   }
 
   private existChildCheck(indexPath: string): boolean {
-    return jsonFileToObj(indexPath).labels.length >= 1;
+    return genNoteMate(indexPath).labels.length >= 1;
   }
 }

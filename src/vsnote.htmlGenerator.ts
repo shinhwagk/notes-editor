@@ -3,58 +3,60 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { emptyNodeIdxObj, genNodeIdxObj } from "./vsnote.lib";
+import { emptyNodeIdxObj, genNoteMate } from "./vsnote.lib";
 import { ICategory, IIndex, INote } from "./vsnote.note";
 
-export class ViewHtmlNote {
+export class HtmlNote {
   private _nodePath: string;
-  private _noteObj: IIndex;
+  private _noteMeta: IIndex;
 
   constructor(notePath: string) {
     this._nodePath = notePath;
-    this._noteObj = genNodeIdxObj(notePath);
+    this._noteMeta = genNoteMate(notePath);
   }
 
-  public htmlView() {
-    return `
-    <head></head>
-    <body>${this._noteObj.categorys.map((category, idx) => this.genCategory(category, idx)).join("")}</body>`;
+  public generateHTML() {
+    const categorysHtml = this._noteMeta.categorys.map((category, idx) => this.category(category, idx)).join("");
+    return `<body>${categorysHtml}</body>`;
   }
 
-  private genHref(command: string, ...args: any[]) {
+  private category(category: ICategory, cIdx: number) {
+    const cols = category.cols;
+    const notes = category.notes;
+    const cName = category.name;
+    return `<h3>${cName}${this.insertNoteButton(cIdx)}</h3><table border="1" style="width:100%">` +
+      "<table>" + notes.map((note) => this.note(cols, note)).join("") + "</table>";
+  }
+
+  private note = (cols: number, note: INote) => {
+    const func = (n: number) => fs.readFileSync(path.join(this._nodePath, `n-${note.i}`, n.toString()), "utf-8");
+
+    const noteHtml = ["<tr>"];
+    noteHtml.push(`<td style="width:15px"><a>${note.i}</a></td>`);
+    for (let i = 1; i <= cols; i++) {
+      noteHtml.push(`<td><pre>${func(i)}</pre></td>`);
+    }
+    noteHtml.push("</tr>");
+    return noteHtml.join("");
+  }
+
+  private href(command: string, ...args: any[]) {
     return encodeURI("command:extension." + command + "?" + JSON.stringify(args));
   }
 
-  private genNoteDocView(doc) {
-    return doc ? "<button>ab</button>" : "<button>ab</button>";
+  private doc(doc: number) { // 0 or 1
+    return doc ? `<a href="${this.href("")}">doc</a>` : "<a>ab</a>";
   }
 
-  private genNoteFileView(file) {
-    return file ? "<button>ab</button>" : "<button>ab</button>";
+  private file(file: number) { // 0 or 1
+    return file ? "<a>file</a>" : "<a>ab</a>";
   }
 
-  private genNote = (cols: number) => (props: INoteNote) => {
-    const func = (n: string) => fs.readFileSync(path.join(this._nodePath, `n-${props.i}`, n), "utf-8");
-
-    let noteHtml = "<tr>";
-    noteHtml += `<td style="width:15px"><a>${props.i}</a></td>`;
-    for (let i = 0; i < cols; i++) {
-      noteHtml += `<td><pre>${func((i + 1).toString())}</pre></td>`;
-    }
-    noteHtml += `</tr>`;
-    return noteHtml;
-  }
-
-  private genInsertNoteButton(cIdx: number) {
-    const addUi = `<a style="color:red" href="${this.genHref("insert.note", this._nodePath, cIdx)}">add</a>`;
+  private insertNoteButton(cIdx: number) {
+    const addUi = `<a style="color:red" href="${this.href("insert.note", this._nodePath, cIdx)}">add</a>`;
     // const delUi = `<a style="color:red" href="${this.genHref("delete.note", this._nodePath, cIdx)}">del</a>`;
     // const updUi = `<a style="color:red" href="${this.genHref("update.note", this._nodePath, cIdx)}">update</a>`;
     return "&nbsp;" + addUi;
-  }
-
-  private genCategory(props: ICategory, cIdx: number) {
-    const genNoteHtmlFun = genNoteHtml(props.cols);
-    return `<h3>${props.name}${genInsertNoteButton(cIdx)}</h3><table border="1" style="width:100%">` + props.notes.map((note) => genNoteHtmlFun(note)).join("") + "</table>";
   }
 
 }

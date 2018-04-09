@@ -13,16 +13,16 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.window.registerTreeDataProvider("vsnote", p);
     context.subscriptions.push(commandShowVscodeNote());
 
-    const handlers = [
+    const handlers: Array<[string, (...args: any[]) => any]> = [
         ["extension.delete.note", hanlders.delete_note_command_handler],
         ["extension.update.note", hanlders.update_note_command_handler],
         ["extension.insert.note", hanlders.insert_note_command_handler],
-        ["extension.delete.category", hanlders.delete_category_command_handler],
-        ["extension.update.category", hanlders.update_category_command_handler],
-        ["extension.insert.category", hanlders.insert_category_command_handler],
-        ["extension.delete.label", hanlders.delete_label_command_handler],
-        ["extension.update.label", hanlders.update_label_command_handler],
-        ["extension.insert.label", hanlders.insert_label_command_handler],
+        // ["extension.delete.category", hanlders.delete_category_command_handler],
+        // ["extension.update.category", hanlders.update_category_command_handler],
+        // ["extension.insert.category", hanlders.insert_category_command_handler],
+        // ["extension.delete.label", hanlders.delete_label_command_handler],
+        // ["extension.update.label", hanlders.update_label_command_handler],
+        // ["extension.insert.label", hanlders.insert_label_command_handler],
     ];
 
     for (const [name, handler] of handlers) {
