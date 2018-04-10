@@ -12,50 +12,47 @@ export class NoteTreeModle {
   private workspaceRoot: string = vscode.workspace.workspaceFolders[0].uri.fsPath;
 
   public async getChildren(element?: INoteNode): Promise<INoteNode[]> {
-    return element ? this.genNodeTree(element.parent) : this.genNodeTree();
+    return this.genNodeTree(element);
   }
 
   public getTreeItem(element: INoteNode): vscode.TreeItem {
-    vscode.window.showInformationMessage(JSON.stringify(element));
-    console.info(JSON.stringify(element));
-    const indexPath = this.genNodeFsPath(this.genNodePath(element.parent));
     return {
-      collapsibleState: element.child ? 1 : 0,
-      // vscode.TreeItemCollapsibleState
-      command: { title: "Show Vscode Note", command: commandNameShowVsNotePreview, arguments: [indexPath] },
+      collapsibleState: element.child ? 1 : 0, // vscode.TreeItemCollapsibleState
+      command: {
+        arguments: [path.join(element.parent, element.label)],
+        command: commandNameShowVsNotePreview,
+        title: "Show Vscode Note",
+      },
       label: element.label,
     };
   }
 
-  private genNodeTree(parent?: string): INoteNode[] {
-    const indexPath = this.genIndexPath(parent);
-    const noteNodes = genNoteMate(indexPath).labels.map((label: string) => this.genChildNode(label, parent));
+  private genNodeTree(element?: INoteNode): INoteNode[] {
+    let _parent = "";
+    if (element) {
+      _parent = element.parent ? path.join(element.parent, element.label) : element.label;
+    }
+
+    const nodeMate = _parent ? genNoteMate(_parent) : genNoteMate();
+    const noteNodes = nodeMate.labels.map((label: string) => this.genChildNode(_parent, label));
     return noteNodes;
   }
 
-  private genIndexPath(parent?: string) {
-    const paths = [this.workspaceRoot];
-    if (parent) {
-      paths.push(parent);
-    }
-    return path.join(...paths);
-  }
-
-  private genNodePath(label: string, parent?: string): string {
-    return parent ? path.join(parent, label) : label;
-  }
+  // private genNodePath(label: string, parent?: string): string {
+  //   return parent ? path.join(parent, label) : label;
+  // }
 
   private genNodeFsPath(nodePath): string {
     return path.join(this.workspaceRoot, nodePath);
   }
 
-  private genChildNode(label: string, parent?: string) {
-    const parentPath = parent || "";
-    const indexPath = this.genIndexPath(parentPath);
-    return { parent: parentPath, label, child: this.existChildCheck(indexPath) };
+  private genChildNode(parent: string, label: string) {
+    // const indexPath = this.genIndexPath(parentPath);
+    return { parent, label, child: this.existChildCheck(parent, label) };
+    // return { parent, label, child: false };
   }
 
-  private existChildCheck(indexPath: string): boolean {
-    return genNoteMate(indexPath).labels.length >= 1;
+  private existChildCheck(parent: string, label: string): boolean {
+    return genNoteMate(path.join(parent, label)).labels.length >= 1;
   }
 }

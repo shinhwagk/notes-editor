@@ -9,4 +9,4 @@ export const viewId: string = "vsnote";
 export const indexFile: string = ".index.json";
 export const commandNameShowVsNotePreview: string = "extension.showVsNotePreview";
 export const commandNameaddNote: string = "extension.add.note";
-export const workspaceRootFsPath = workspace.workspaceFolders[0].uri.fsPath;
+export const workspaceRootPath = workspace.workspaceFolders[0].uri.fsPath;

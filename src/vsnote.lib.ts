@@ -1,8 +1,12 @@
 import * as fs from "fs";
 import * as path from "path";
 
+import * as vscode from "vscode";
+
 import { IIndex } from "./vsnote.note";
 import { indexFile } from "./vsnote.settings";
+
+export const workspaceRoot: string = vscode.workspace.workspaceFolders[0].uri.fsPath;
 
 export function deleteFolderRecursive(p): void {
     if (fs.existsSync(p)) {
@@ -20,12 +24,8 @@ export function deleteFolderRecursive(p): void {
 
 // delete futurity
 export function genNoteMate(nodePath?: string): IIndex {
-    if (nodePath) {
-        const _idxFilePath = path.join(nodePath, indexFile);
-        return JSON.parse(fs.readFileSync(_idxFilePath, "UTF-8")) as IIndex;
-    } else {
-        return emptyNodeIdxObj;
-    }
+    const _idxFilePath = nodePath ? path.join(workspaceRoot, nodePath, indexFile) : path.join(workspaceRoot, indexFile);
+    return JSON.parse(fs.readFileSync(_idxFilePath, "UTF-8")) as IIndex;
 }
 
 // export function genIdxObj(filePath): INoteIndex {
