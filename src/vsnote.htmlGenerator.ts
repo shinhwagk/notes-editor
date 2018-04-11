@@ -33,18 +33,21 @@ export class HtmlNote {
   }
 
   private note(cIdx: number, cols: number, note: INote): string {
-    const func = (n: number) => {
-      fs.readFileSync(path.join(workspaceRoot, this._notePath, `n-${note.i}`, n.toString()), "utf-8");
-    };
+    const func = (n: number) => fs.readFileSync(path.join(workspaceRoot, this._notePath, `n-${note.i}`, n.toString()), "utf-8");
 
     const noteHtml = ["<tr>"];
     noteHtml.push(`<td width="5%"><a>${note.i} ${this.viewDoc(note.d)} ${this.viewFile(note.f)}</a></td>`);
     for (let i = 1; i <= cols; i++) {
       noteHtml.push(`<td><pre>${func(i)}</pre></td>`);
     }
-    noteHtml.push("<td>", this.updateNoteButton(cIdx, note.i, cols), this.deleteNoteButton(cIdx, note.i), "</td>");
+    noteHtml.push(`<td width="5%">`);
+    for (let i = 1; i <= cols; i++) {
+      noteHtml.push(this.updateNoteButton(note.i, i));
+    }
+    noteHtml.push(this.updateNoteDocButton(note.i));
+    noteHtml.push(this.updateNoteFileButton(note.i));
+    noteHtml.push("</td>");
     noteHtml.push("</tr>");
-
     return noteHtml.join("");
   }
 
@@ -60,16 +63,20 @@ export class HtmlNote {
     return `<a style="color:red" href="${this.href("delete.note", this._notePath, cIdx, nIdx)}">Delete</a>`;
   }
 
-  private updateNoteButton(cIdx: number, nIdx: number, cols: number) {
-    const buttons: string[] = [];
-    for (let i = 1; i <= cols; i++) {
-      buttons.push(`<a style="color:red" href="${this.href("update.note", this._notePath, cIdx, nIdx)}">Update-${i}</a><br/>`);
-    }
-    return buttons.join("");
+  private updateNoteButton(nIdx: number, nNum: number) {
+    return `<a style="color:red" href="${this.href("update.note", this._notePath, nIdx, nNum)}">Update-${nNum}</a><br/>`;
   }
 
   private updateCategoryButton(cIdx: number) {
     return `<a style="color:red" href="${this.href("update.category", this._notePath, cIdx)}"></a>`;
+  }
+
+  private updateNoteDocButton(nIdx: number) {
+    return `<a style="color:red" href="${this.href("update.note.doc", this._notePath, nIdx)}">Update-doc</a><br/>`;
+  }
+
+  private updateNoteFileButton(nIdx: number) {
+    return `<a style="color:red" href="${this.href("update.note.file", this._notePath, nIdx)}">Update-file</a><br/>`;
   }
 
   private viewDoc(e: number) {

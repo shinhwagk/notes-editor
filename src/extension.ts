@@ -15,6 +15,8 @@ export async function activate(context: vscode.ExtensionContext) {
     const handlers: Array<[string, (...args: any[]) => any]> = [
         ["extension.delete.note", commandHanlders.delete_note_handler],
         ["extension.update.note", commandHanlders.update_note_handler],
+        ["extension.update.note.doc", commandHanlders.update_or_delete_note_doc_handler],
+        ["extension.update.note.file", commandHanlders.update_or_delete_note_file_handler],
         ["extension.insert.note", commandHanlders.insert_note_handler],
         // ["extension.delete.category", commandHanlders.delete_category_handler],
         ["extension.update.category", commandHanlders.update_category_handler],

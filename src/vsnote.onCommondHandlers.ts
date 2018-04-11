@@ -9,31 +9,13 @@ import { provider } from "./vsnote.previewHtml";
 import { commandNameShowVsNotePreview, workspaceRootPath } from "./vsnote.settings";
 import { INoteNode } from "./vsnote.view.node";
 
-export const update_note_handler = async (nodeFsPath, cIdx) => {
-    const indexContent = genNoteMate(nodeFsPath);
-
-    const category = indexContent.categorys[cIdx];
-
-    const notePickList: vscode.QuickPickItem[] = [];
-    const notes: any[] = category.notes;
-    for (const nId of notes) {
-        notePickList.push({ label: notes[nId].i.toString(), description: nId.toString() });
-    }
-
-    const noteId = await vscode.window.showQuickPick(notePickList);
-
-    const cols = category.cols;
-    for (let i = 1; i <= cols; i++) {
-        const uri = vscode.Uri.file(path.join(nodeFsPath, `n-${noteId.label}`, i.toString()));
-        // vscode.workspace.openTextDocument;
-        vscode.window.showTextDocument(uri, { preview: false, viewColumn: vscode.ViewColumn.Two });
-    }
-    const note = notes[Number(noteId.label)];
-    if (note.d) {
-        const uri = vscode.Uri.file(path.join(nodeFsPath, `n-${noteId.label}`, "d", "README.md"));
-        // vscode.workspace.openTextDocument
-        vscode.window.showTextDocument(uri, { preview: false, viewColumn: vscode.ViewColumn.Two });
-    }
+export const update_note_handler = async (nodePath, nIdx, nNum) => {
+    // const indexContent = genNoteMate(nodeFsPath);
+    // const category = indexContent.categorys[cIdx];
+    // const _note = category.notes[nIdx];
+    const _note_file = path.join(workspaceRootPath, nodePath, `n-${nIdx}`, nNum.toString());
+    const uri = vscode.Uri.file(_note_file);
+    await vscode.commands.executeCommand("vscode.open", uri);
 };
 
 export const insert_label_handler = (m) => async (noteNode?: INoteNode) => {
@@ -142,6 +124,28 @@ export const update_category_handler = async (nodePath: string, cIdx: number) =>
     _nodeMeta.categorys[cIdx].name = _newCategoryName;
     fs.writeFileSync(path.join(workspaceRootPath, nodePath, ".index.json"), JSON.stringify(_nodeMeta), "UTF-8");
     refreshPreview(nodePath);
+};
+
+export const update_or_delete_note_doc_handler = async (nodePath: string, nIdx: number) => {
+    const _note_folder = path.join(workspaceRootPath, nodePath, `n-${nIdx}`, "d");
+    if (!fs.existsSync(_note_folder)) {
+        fs.mkdirSync(_note_folder);
+        fs.writeFileSync(path.join(_note_folder, "README.md"), "", "utf-8");
+    }
+    vscode.window.showInformationMessage(_note_folder);
+    const uri = vscode.Uri.file(_note_folder);
+    await vscode.commands.executeCommand("vscode.openFolder", uri, true);
+};
+
+export const update_or_delete_note_file_handler = async (nodePath: string, nIdx: number) => {
+    const _note_folder = path.join(workspaceRootPath, nodePath, `n-${nIdx}`, "f");
+    if (!fs.existsSync(_note_folder)) {
+        fs.mkdirSync(_note_folder);
+        fs.writeFileSync(path.join(_note_folder, "README.md"), "", "utf-8");
+    }
+    vscode.window.showInformationMessage(_note_folder);
+    const uri = vscode.Uri.file(_note_folder);
+    await vscode.commands.executeCommand("vscode.openFolder", uri, true);
 };
 
 function refreshPreview(nodeFsPath) {
