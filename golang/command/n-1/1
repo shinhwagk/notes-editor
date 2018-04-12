@@ -1,0 +1,9 @@
+# cross compile from Windows to Linux?
+export GOARCH=amd64
+export GOOS=linux
+go build
+
+# windows cmd
+set GOARCH=amd64
+set GOOS=linux
+go build main.go
