@@ -46,6 +46,7 @@ export class HtmlNote {
     }
     noteHtml.push(this.updateNoteDocButton(note.i));
     noteHtml.push(this.updateNoteFileButton(note.i));
+    noteHtml.push(this.deleteNoteButton(cIdx, note.i));
     noteHtml.push("</td>");
     noteHtml.push("</tr>");
     return noteHtml.join("");

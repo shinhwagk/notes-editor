@@ -2,7 +2,7 @@
   "name": "vscode-note",
   "displayName": "vscode-note",
   "description": "save note by json file",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "publisher": "shinhwagk",
   "engines": {
     "vscode": "^1.17.0"
@@ -46,40 +46,12 @@
         "title": "Show Vscode Note"
       },
       {
-        "command": "extension.insert.note",
-        "title": "vsnote: insert vsnote"
-      },
-      {
         "command": "extension.insert.category",
         "title": "vsnote: insert category"
       },
       {
         "command": "extension.insert.label",
         "title": "vsnote: insert label"
-      },
-      {
-        "command": "extension.update.note",
-        "title": "vsnote: update note"
-      },
-      {
-        "command": "extension.update.category",
-        "title": "vsnote: update category"
-      },
-      {
-        "command": "extension.update.label",
-        "title": "vsnote: update label"
-      },
-      {
-        "command": "extension.delete.note",
-        "title": "vsnote: delete note"
-      },
-      {
-        "command": "extension.delete.category",
-        "title": "vsnote: delete category"
-      },
-      {
-        "command": "extension.delete.label",
-        "title": "vsnote: delete label"
       }
     ],
     "views": {
@@ -100,7 +72,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^5.0.0",
-    "@types/node": "^9.6.2",
+    "@types/node": "^9.6.4",
     "typescript": "^2.8.1",
     "vscode": "^1.1.14",
     "tslint": "^5.9.1"

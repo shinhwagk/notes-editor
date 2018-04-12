@@ -10,9 +10,6 @@ import { commandNameShowVsNotePreview, workspaceRootPath } from "./vsnote.settin
 import { INoteNode } from "./vsnote.view.node";
 
 export const update_note_handler = async (nodePath, nIdx, nNum) => {
-    // const indexContent = genNoteMate(nodeFsPath);
-    // const category = indexContent.categorys[cIdx];
-    // const _note = category.notes[nIdx];
     const _note_file = path.join(workspaceRootPath, nodePath, `n-${nIdx}`, nNum.toString());
     const uri = vscode.Uri.file(_note_file);
     await vscode.commands.executeCommand("vscode.open", uri);
@@ -34,20 +31,21 @@ export const insert_label_handler = (m) => async (noteNode?: INoteNode) => {
     vscode.window.registerTreeDataProvider("vsnote", m);
 };
 
-export const delete_note_handler = async (noteNode, cIdx: number) => {
-    const nodeMeta = genNoteMate(noteNode);
-    const notePickList: vscode.QuickPickItem[] = [];
-    const category = nodeMeta.categorys[cIdx];
-    const notes = category.notes;
-    notes.forEach((note, idx) => notePickList.push({ label: notes[idx].i.toString(), description: idx.toString() }));
+export const delete_note_handler = async (nodePath: string, cIdx: number, nIdx: number) => {
+    const _note_folder = path.join(workspaceRootPath, nodePath, `n-${nIdx}`);
+    const _idxObj = genNoteMate(nodePath);
+    const notePickList: vscode.QuickPickItem[] = [{ label: "YES", description: "" }, { label: "NO", description: "" }];
+    const category = _idxObj.categorys[cIdx];
+    const notes: INote[] = category.notes;
 
-    const noteId = await vscode.window.showQuickPick(notePickList);
-
-    deleteFolderRecursive(path.join(noteNode, `n-${noteId.label}`));
-
-    notes.splice(Number(noteId.description), 1);
-    fs.writeFileSync(path.join(noteNode, ".index.json"), JSON.stringify(nodeMeta), { encoding: "UTF-8" });
-    refreshPreview(noteNode);
+    const del = await vscode.window.showQuickPick(notePickList);
+    if (del.label === "YES") {
+        notes.splice(nIdx, 1);
+        vscode.window.showInformationMessage(path.join(workspaceRootPath, nodePath, ".index.json"));
+        fs.writeFileSync(path.join(workspaceRootPath, nodePath, ".index.json"), JSON.stringify(_idxObj), "UTF-8");
+        deleteFolderRecursive(_note_folder);
+        refreshPreview(nodePath);
+    }
 };
 
 export const insert_category_handler = async (noteNode: INoteNode) => {
@@ -60,10 +58,10 @@ export const insert_category_handler = async (noteNode: INoteNode) => {
     const categoryColNumber = await vscode.window.showQuickPick(categoryColNumberPickList);
     if (!categoryColNumber) { return; }
 
-    const _noteMeta = genNoteMate(noteNode.parent);
+    const _noteMeta = genNoteMate(path.join(noteNode.parent, noteNode.label));
     _noteMeta.categorys.push({ name: _categoryName, cols: Number(categoryColNumber.label), notes: [] });
-    fs.writeFileSync(path.join(workspaceRootPath, noteNode.parent, ".index.json"), JSON.stringify(_noteMeta), "UTF-8");
-    refreshPreview(noteNode.parent);
+    fs.writeFileSync(path.join(workspaceRootPath, noteNode.parent, noteNode.label, ".index.json"), JSON.stringify(_noteMeta), "UTF-8");
+    refreshPreview(path.join(noteNode.parent, noteNode.label));
 };
 
 export const insert_note_handler = async (nodePath: string, cIdx: number) => {
@@ -146,6 +144,12 @@ export const update_or_delete_note_file_handler = async (nodePath: string, nIdx:
     vscode.window.showInformationMessage(_note_folder);
     const uri = vscode.Uri.file(_note_folder);
     await vscode.commands.executeCommand("vscode.openFolder", uri, true);
+};
+
+export const preview_note_doc_handler = async (nodePath: string, nIdx: number) => {
+    const _doc_readme_uri = vscode.Uri.file(path.join(workspaceRootPath, nodePath, `n-${nIdx}`, "d", "README.md"));
+    await vscode.commands.executeCommand("vscode.open", _doc_readme_uri);
+    await vscode.commands.executeCommand("markdown.showPreviewToSide", _doc_readme_uri, { sideBySide: true });
 };
 
 function refreshPreview(nodeFsPath) {
