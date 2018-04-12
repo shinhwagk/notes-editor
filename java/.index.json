@@ -1,14 +1,1 @@
-{
-    "labels":  [
-                   "time"
-               ],
-    "categorys":  [
-                      {
-                          "cols":  1,
-                          "name":  "example",
-                          "notes":  [
-
-                                    ]
-                      }
-                  ]
-}
+{"labels":["time"],"categorys":[{"cols":1,"name":"example","notes":[]}],"seq":1}

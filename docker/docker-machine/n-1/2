@@ -1,0 +1,8 @@
+1.执行之前需要对10.65.103.58做ssh免密登录
+docker-machine create \
+  --driver generic \
+  --generic-ip-address 10.65.103.58 \
+  --generic-engine-port 2377 \
+  --generic-ssh-user root \
+  --generic-ssh-key ~/.ssh/id_rsa \
+  d1 #hostname

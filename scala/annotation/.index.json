@@ -1,18 +1,1 @@
-{
-    "labels":  [
-
-               ],
-    "categorys":  [
-                      {
-                          "cols":  2,
-                          "name":  "annotations",
-                          "notes":  [
-                                        {
-                                            "doc":  false,
-                                            "id":  114,
-                                            "file":  false
-                                        }
-                                    ]
-                      }
-                  ]
-}
+{"labels":[],"categorys":[{"cols":2,"name":"annotations","notes":[{"d":0,"f":0,"i":1}]}],"seq":2}

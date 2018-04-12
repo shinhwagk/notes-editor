@@ -1,16 +1,1 @@
-{
-  "labels": [],
-  "categorys": [
-    {
-      "cols": 2,
-      "notes": [
-        {
-          "doc": false,
-          "file": false,
-          "id": 1
-        }
-      ],
-      "name": "branch"
-    }
-  ]
-}
+{"labels":[],"categorys":[{"cols":2,"notes":[{"d":0,"f":0,"i":1}],"name":"branch"}],"seq":2}

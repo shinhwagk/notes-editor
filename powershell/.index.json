@@ -1,18 +1,1 @@
-{
-    "labels": [
-        "collect"
-    ],
-    "categorys": [
-        {
-            "cols": 2,
-            "name": "install",
-            "notes": [
-                {
-                    "doc": false,
-                    "id": 93,
-                    "file": false
-                }
-            ]
-        }
-    ]
-}
+{"labels":["collect"],"categorys":[{"cols":2,"name":"install","notes":[{"d":0,"f":0,"i":1}]}],"seq":3}
