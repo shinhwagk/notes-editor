@@ -16,7 +16,7 @@ export const update_note_handler = async (nodePath, nIdx, nNum) => {
 };
 
 export const insert_label_handler = (m) => async (noteNode?: INoteNode) => {
-    const _idxPath: string = noteNode ? path.join(noteNode.parent, noteNode.label) : workspaceRootPath;
+    const _idxPath: string = noteNode ? path.join(noteNode.parent, noteNode.label) : "";
     const _label: string = await vscode.window.showInputBox();
     if (!_label) { return; }
     const _idxObj = genNoteMate(_idxPath);
