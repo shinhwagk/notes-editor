@@ -124,8 +124,8 @@ export const update_category_handler = async (nodePath: string, cIdx: number) =>
     refreshPreview(nodePath);
 };
 
-export const update_or_delete_note_doc_handler = async (nodePath: string, nIdx: number) => {
-    const _note_folder = path.join(workspaceRootPath, nodePath, `n-${nIdx}`, "d");
+export const update_or_delete_note_doc_handler = async (nodePath: string, nId: number) => {
+    const _note_folder = path.join(workspaceRootPath, nodePath, `n-${nId}`, "d");
     if (!fs.existsSync(_note_folder)) {
         fs.mkdirSync(_note_folder);
         fs.writeFileSync(path.join(_note_folder, "README.md"), "", "utf-8");

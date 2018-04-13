@@ -36,7 +36,7 @@ export class HtmlNote {
     const func = (n: number) => fs.readFileSync(path.join(workspaceRoot, this._notePath, `n-${note.i}`, n.toString()), "utf-8");
 
     const noteHtml = ["<tr>"];
-    noteHtml.push(`<td width="5%"><a>${note.i} ${this.viewDoc(note.d)} ${this.viewFile(note.f)}</a></td>`);
+    noteHtml.push(`<td width="5%"><a>${note.i} ${this.viewDoc(note.d, note.i)} ${this.viewFile(note.f)}</a></td>`);
     for (let i = 1; i <= cols; i++) {
       noteHtml.push(`<td><pre>${func(i)}</pre></td>`);
     }
@@ -80,8 +80,9 @@ export class HtmlNote {
     return `<a style="color:red" href="${this.href("update.note.file", this._notePath, nIdx)}">Update-file</a><br/>`;
   }
 
-  private viewDoc(e: number) {
-    return e ? "| <a>D</a>" : "";
+  private viewDoc(e: number, nId: number) {
+    const noteDocButton = `<a style="color:red" href="${this.href("preview.note.doc", this._notePath, nId)}">D</a>`;
+    return e ? noteDocButton : "";
   }
 
   private viewFile(e: number) {
