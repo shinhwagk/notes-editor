@@ -1,0 +1,1 @@
+{"labels":[],"categorys":[{"name":"node_exporter","cols":2,"notes":[{"d":0,"f":0,"i":1}]},{"name":"pushgateway","cols":2,"notes":[]},{"name":"alertmanager","cols":2,"notes":[{"d":0,"f":0,"i":2},{"d":0,"f":0,"i":3}]},{"name":"tools","cols":2,"notes":[{"d":0,"f":0,"i":4}]}],"seq":5}
