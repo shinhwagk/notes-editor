@@ -21,7 +21,6 @@ export const insert_label_handler = (m) => async (noteNode?: INoteNode) => {
     if (!_label) { return; }
     const _idxObj = genNoteMate(_idxPath);
     _idxObj.labels.push(_label);
-    vscode.window.showInformationMessage(JSON.stringify(_idxObj));
 
     fs.mkdirSync(path.join(workspaceRootPath, _idxPath, _label));
 
