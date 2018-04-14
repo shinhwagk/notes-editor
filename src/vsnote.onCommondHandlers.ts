@@ -64,13 +64,6 @@ export const insert_category_handler = async (noteNode: INoteNode) => {
 };
 
 export const insert_note_handler = async (nodePath: string, cIdx: number) => {
-    const itemPickList: vscode.QuickPickItem[] = [];
-    itemPickList.push({ label: "Doc,File", description: "" });
-    itemPickList.push({ label: "Doc", description: "" });
-    itemPickList.push({ label: "File", description: "" });
-    itemPickList.push({ label: "None", description: "" });
-    const modeChoice = await vscode.window.showQuickPick(itemPickList);
-
     const nodeMeta: IIndex = genNoteMate(nodePath);
     const seq = nodeMeta.seq;
 
@@ -88,26 +81,7 @@ export const insert_note_handler = async (nodePath: string, cIdx: number) => {
         fs.writeFileSync(path.join(noteFolder, i.toString()), "", "UTF-8");
     }
 
-    let note;
-    switch (modeChoice.label) {
-        case "Doc,File":
-            note = { d: 1, f: 1, i: seq };
-            fs.mkdirSync(path.join(noteFolder, "d"));
-            fs.writeFileSync(path.join(noteFolder, "d", "README.md"), "", "UTF-8");
-            fs.mkdirSync(path.join(noteFolder, "f"));
-            break;
-        case "Doc":
-            note = { d: 1, f: 0, i: seq };
-            fs.mkdirSync(path.join(noteFolder, "d"));
-            fs.writeFileSync(path.join(noteFolder, "d", "README.md"), "", "UTF-8");
-            break;
-        case "File":
-            note = { d: 0, f: 1, i: seq };
-            fs.mkdirSync(path.join(noteFolder, "f"));
-            break;
-        default:
-            note = { d: 0, f: 0, i: seq };
-    }
+    const note = { d: 0, f: 0, i: seq };
 
     notes.push(note);
     fs.writeFileSync(path.join(workspaceRootPath, nodePath, ".index.json"), JSON.stringify(nodeMeta), "UTF-8");
@@ -123,19 +97,23 @@ export const update_category_handler = async (nodePath: string, cIdx: number) =>
     refreshPreview(nodePath);
 };
 
-export const update_or_delete_note_doc_handler = async (nodePath: string, nId: number) => {
+export const update_or_delete_note_doc_handler = async (nodePath: string, cIdx: number, nId: number) => {
+    const nodeMeta: IIndex = genNoteMate(nodePath);
+    const note = nodeMeta.categorys[cIdx].notes.filter((n) => n.i === nId)[0];
+    note.d = 1;
+
     const _note_folder = path.join(workspaceRootPath, nodePath, `n-${nId}`, "d");
     if (!fs.existsSync(_note_folder)) {
         fs.mkdirSync(_note_folder);
         fs.writeFileSync(path.join(_note_folder, "README.md"), "", "utf-8");
     }
-    vscode.window.showInformationMessage(_note_folder);
+    fs.writeFileSync(path.join(workspaceRootPath, nodePath, ".index.json"), JSON.stringify(nodeMeta), "UTF-8");
     const uri = vscode.Uri.file(_note_folder);
     await vscode.commands.executeCommand("vscode.openFolder", uri, true);
 };
 
-export const update_or_delete_note_file_handler = async (nodePath: string, nIdx: number) => {
-    const _note_folder = path.join(workspaceRootPath, nodePath, `n-${nIdx}`, "f");
+export const update_or_delete_note_file_handler = async (nodePath: string, nId: number) => {
+    const _note_folder = path.join(workspaceRootPath, nodePath, `n-${nId}`, "f");
     if (!fs.existsSync(_note_folder)) {
         fs.mkdirSync(_note_folder);
         fs.writeFileSync(path.join(_note_folder, "README.md"), "", "utf-8");

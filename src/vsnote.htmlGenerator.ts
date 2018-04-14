@@ -44,7 +44,7 @@ export class HtmlNote {
     for (let i = 1; i <= cols; i++) {
       noteHtml.push(this.updateNoteButton(note.i, i));
     }
-    noteHtml.push(this.updateNoteDocButton(note.i));
+    noteHtml.push(this.updateNoteDocButton(cIdx, note.i));
     noteHtml.push(this.updateNoteFileButton(note.i));
     noteHtml.push(this.deleteNoteButton(cIdx, note.i));
     noteHtml.push("</td>");
@@ -72,8 +72,8 @@ export class HtmlNote {
     return `<a style="color:red" href="${this.href("update.category", this._notePath, cIdx)}"></a>`;
   }
 
-  private updateNoteDocButton(nIdx: number) {
-    return `<a style="color:red" href="${this.href("update.note.doc", this._notePath, nIdx)}">Update-doc</a><br/>`;
+  private updateNoteDocButton(cIdx: number, nId: number) {
+    return `<a style="color:red" href="${this.href("update.note.doc", this._notePath, cIdx, nId)}">Update-doc</a><br/>`;
   }
 
   private updateNoteFileButton(nIdx: number) {
