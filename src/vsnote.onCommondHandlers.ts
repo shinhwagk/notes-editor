@@ -24,7 +24,7 @@ export const insert_label_handler = (m) => async (noteNode?: INoteNode) => {
 
     fs.mkdirSync(path.join(workspaceRootPath, _idxPath, _label));
 
-    fs.writeFileSync(path.join(workspaceRootPath, _idxPath, _label, ".index.json"), JSON.stringify(emptyNodeIdxObj), "UTF-8");
+    fs.writeFileSync(path.join(workspaceRootPath, _idxPath, _label.trim(), ".index.json"), JSON.stringify(emptyNodeIdxObj), "UTF-8");
     fs.writeFileSync(path.join(workspaceRootPath, _idxPath, ".index.json"), JSON.stringify(_idxObj), "UTF-8");
 
     vscode.window.registerTreeDataProvider("vsnote", m);
@@ -58,7 +58,7 @@ export const insert_category_handler = async (noteNode: INoteNode) => {
     if (!categoryColNumber) { return; }
 
     const _noteMeta = genNoteMate(path.join(noteNode.parent, noteNode.label));
-    _noteMeta.categorys.push({ name: _categoryName, cols: Number(categoryColNumber.label), notes: [] });
+    _noteMeta.categorys.push({ name: _categoryName.trim(), cols: Number(categoryColNumber.label), notes: [] });
     fs.writeFileSync(path.join(workspaceRootPath, noteNode.parent, noteNode.label, ".index.json"), JSON.stringify(_noteMeta), "UTF-8");
     refreshPreview(path.join(noteNode.parent, noteNode.label));
 };

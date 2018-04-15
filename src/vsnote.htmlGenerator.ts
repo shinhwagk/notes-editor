@@ -73,11 +73,11 @@ export class HtmlNote {
   }
 
   private updateNoteDocButton(cIdx: number, nId: number) {
-    return `<a style="color:red" href="${this.href("update.note.doc", this._notePath, cIdx, nId)}">Update-doc</a><br/>`;
+    return `<a style="color:red" href="${this.href("update.note.doc", this._notePath, cIdx, nId)}">U-d</a><br/>`;
   }
 
   private updateNoteFileButton(nIdx: number) {
-    return `<a style="color:red" href="${this.href("update.note.file", this._notePath, nIdx)}">Update-file</a><br/>`;
+    return `<a style="color:red" href="${this.href("update.note.file", this._notePath, nIdx)}">U-f</a><br/>`;
   }
 
   private viewDoc(e: number, nId: number) {
