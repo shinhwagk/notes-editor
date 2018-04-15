@@ -1,0 +1,9 @@
+var pi int = 1 		// value
+fmt.Println(pi) 	// print: 1
+var p *int = &pi 	// pointer 
+fmt.Println(p) 		// print pointer address
+*p = 8 				// set value of the pointer p to 8, use * operator
+fmt.Println(*p) 	// print 8
+
+// 使用 值 对应的 指针 , 用 & 操作符
+// 使用 指针 对应的值  , 用 * 操作符
