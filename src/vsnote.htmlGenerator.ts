@@ -64,8 +64,8 @@ export class HtmlNote {
     return `<a style="color:red" href="${this.href("delete.note", this._notePath, cIdx, nIdx)}">Delete</a>`;
   }
 
-  private updateNoteButton(nIdx: number, nNum: number) {
-    return `<a style="color:red" href="${this.href("update.note", this._notePath, nIdx, nNum)}">U-n-${nNum}</a><br/>`;
+  private updateNoteButton(nId: number, nNum: number) {
+    return `<a style="color:red" href="${this.href("update.note", nId, nNum)}">U-n-${nNum}</a><br/>`;
   }
 
   private updateCategoryButton(cIdx: number) {

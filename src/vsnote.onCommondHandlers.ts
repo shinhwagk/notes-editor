@@ -9,8 +9,8 @@ import { provider } from "./vsnote.previewHtml";
 import { commandNameShowVsNotePreview, workspaceRootPath } from "./vsnote.settings";
 import { INoteNode } from "./vsnote.view.node";
 
-export const update_note_handler = async (nodePath, nIdx, nNum) => {
-    const _note_file = path.join(workspaceRootPath, nodePath, `n-${nIdx}`, nNum.toString());
+export const update_note_handler = async (nId, nNum) => {
+    const _note_file = path.join(workspaceRootPath, "notes", nId, nNum);
     const uri = vscode.Uri.file(_note_file);
     const document = await vscode.workspace.openTextDocument(uri);
     vscode.window.showTextDocument(document, { viewColumn: vscode.ViewColumn.Two, preview: false });
@@ -31,8 +31,8 @@ export const insert_label_handler = (m) => async (noteNode?: INoteNode) => {
     vscode.window.registerTreeDataProvider("vsnote", m);
 };
 
-export const delete_note_handler = async (nodePath: string, cIdx: number, nIdx: number) => {
-    const _note_folder = path.join(workspaceRootPath, nodePath, `n-${nIdx}`);
+export const delete_note_handler = async (nodePath: string, cIdx: number, nId: number) => {
+    const _note_folder = path.join(workspaceRootPath, "notes", nId.toString());
     const _idxObj = genNoteMate(nodePath);
     const notePickList: vscode.QuickPickItem[] = [{ label: "YES", description: "" }, { label: "NO", description: "" }];
     const category = _idxObj.categorys[cIdx];
@@ -40,7 +40,7 @@ export const delete_note_handler = async (nodePath: string, cIdx: number, nIdx: 
 
     const del = await vscode.window.showQuickPick(notePickList);
     if (del.label === "YES") {
-        notes.splice(nIdx, 1);
+        category.notes = notes.filter((note) => note.i !== nId);
         vscode.window.showInformationMessage(path.join(workspaceRootPath, nodePath, ".index.json"));
         fs.writeFileSync(path.join(workspaceRootPath, nodePath, ".index.json"), JSON.stringify(_idxObj), "UTF-8");
         deleteFolderRecursive(_note_folder);
@@ -66,17 +66,17 @@ export const insert_category_handler = async (noteNode: INoteNode) => {
 
 export const insert_note_handler = async (nodePath: string, cIdx: number) => {
     const nodeMeta: IIndex = genNoteMate(nodePath);
-    const seq = nodeMeta.seq;
 
     const category = nodeMeta.categorys[cIdx];
     const cols: number = category.cols;
     const notes: INote[] = category.notes;
 
-    const noteFolder = path.join(workspaceRootPath, nodePath, `n-${seq}`);
+    const note_id: number = Number(fs.readFileSync(path.join(workspaceRootPath, "notes", "seq")));
+
+    const noteFolder = path.join(workspaceRootPath, "notes", note_id.toString());
     if (!fs.existsSync(noteFolder)) {
         fs.mkdirSync(noteFolder);
     }
-    nodeMeta.seq = seq + 1;
 
     for (let i = cols; i >= 1; i--) {
         fs.writeFileSync(path.join(noteFolder, i.toString()), "", "UTF-8");
@@ -85,7 +85,7 @@ export const insert_note_handler = async (nodePath: string, cIdx: number) => {
         });
     }
 
-    const note = { d: 0, f: 0, i: seq };
+    const note = { d: 0, f: 0, i: note_id };
 
     notes.push(note);
     fs.writeFileSync(path.join(workspaceRootPath, nodePath, ".index.json"), JSON.stringify(nodeMeta), "UTF-8");
