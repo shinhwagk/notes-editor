@@ -31,5 +31,4 @@ const previewUri = vscode.Uri.parse("vscode-note://note/content");
 export const provider = new HtmlDocumentContentProvider(previewUri);
 vscode.workspace.registerTextDocumentContentProvider("vscode-note", provider);
 
-vscode.commands.executeCommand("vscode.previewHtml", previewUri, vscode.ViewColumn.One, "vscode-note")
-    .then(null, (reason) => vscode.window.showErrorMessage(reason));
+vscode.commands.executeCommand("vscode.previewHtml", previewUri, vscode.ViewColumn.One, "vscode-note");

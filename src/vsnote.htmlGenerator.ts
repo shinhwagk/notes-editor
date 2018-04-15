@@ -65,11 +65,11 @@ export class HtmlNote {
   }
 
   private updateNoteButton(nIdx: number, nNum: number) {
-    return `<a style="color:red" href="${this.href("update.note", this._notePath, nIdx, nNum)}">Update-${nNum}</a><br/>`;
+    return `<a style="color:red" href="${this.href("update.note", this._notePath, nIdx, nNum)}">U-n-${nNum}</a><br/>`;
   }
 
   private updateCategoryButton(cIdx: number) {
-    return `<a style="color:red" href="${this.href("update.category", this._notePath, cIdx)}"></a>`;
+    return `<a style="color:red" href="${this.href("update.category", this._notePath, cIdx)}">Update Category</a>`;
   }
 
   private updateNoteDocButton(cIdx: number, nId: number) {

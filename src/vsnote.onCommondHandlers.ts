@@ -12,7 +12,8 @@ import { INoteNode } from "./vsnote.view.node";
 export const update_note_handler = async (nodePath, nIdx, nNum) => {
     const _note_file = path.join(workspaceRootPath, nodePath, `n-${nIdx}`, nNum.toString());
     const uri = vscode.Uri.file(_note_file);
-    await vscode.commands.executeCommand("vscode.open", uri);
+    const document = await vscode.workspace.openTextDocument(uri);
+    vscode.window.showTextDocument(document, { viewColumn: vscode.ViewColumn.Two, preview: false });
 };
 
 export const insert_label_handler = (m) => async (noteNode?: INoteNode) => {
@@ -77,8 +78,11 @@ export const insert_note_handler = async (nodePath: string, cIdx: number) => {
     }
     nodeMeta.seq = seq + 1;
 
-    for (let i = 1; i <= cols; i++) {
+    for (let i = cols; i >= 1; i--) {
         fs.writeFileSync(path.join(noteFolder, i.toString()), "", "UTF-8");
+        vscode.workspace.openTextDocument(vscode.Uri.file(path.join(noteFolder, i.toString()))).then((document) => {
+            vscode.window.showTextDocument(document, { viewColumn: vscode.ViewColumn.Two, preview: false });
+        });
     }
 
     const note = { d: 0, f: 0, i: seq };
