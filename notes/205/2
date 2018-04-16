@@ -1,0 +1,3 @@
+docker run -d \
+  --net="host" \
+  prom/node-exporter:master
