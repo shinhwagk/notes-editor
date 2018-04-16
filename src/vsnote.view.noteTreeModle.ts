@@ -3,7 +3,7 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { genNoteMate, jsonFileToObj } from "./vsnote.lib";
+import { genNoteMate } from "./vsnote.lib";
 import { IIndex } from "./vsnote.note";
 import { commandNameShowVsNotePreview } from "./vsnote.settings";
 import { INoteNode } from "./vsnote.view.node";
@@ -36,14 +36,6 @@ export class NoteTreeModle {
     const nodeMate = _parent ? genNoteMate(_parent) : genNoteMate();
     const noteNodes = nodeMate.labels.map((label: string) => this.genChildNode(_parent, label));
     return noteNodes;
-  }
-
-  // private genNodePath(label: string, parent?: string): string {
-  //   return parent ? path.join(parent, label) : label;
-  // }
-
-  private genNodeFsPath(nodePath): string {
-    return path.join(this.workspaceRoot, nodePath);
   }
 
   private genChildNode(parent: string, label: string) {

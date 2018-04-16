@@ -7,7 +7,6 @@ import { provider } from "./vsnote.previewHtml";
 import { NoteTreeProvider } from "./vsnote.view.onView";
 
 export async function activate(context: vscode.ExtensionContext) {
-
     const p = new NoteTreeProvider();
 
     vscode.window.registerTreeDataProvider("vsnote", p);

@@ -3,7 +3,7 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-import { deleteFolderRecursive, emptyNodeIdxObj, genNoteMate } from "./vsnote.lib";
+import { deleteFolderRecursive, emptyNodeIdxObj, genNoteMate, saveNodeIndex } from "./vsnote.lib";
 import { IIndex, INote } from "./vsnote.note";
 import { provider } from "./vsnote.previewHtml";
 import { commandNameShowVsNotePreview, workspaceRootPath } from "./vsnote.settings";
@@ -25,8 +25,8 @@ export const insert_label_handler = (m) => async (noteNode?: INoteNode) => {
 
     fs.mkdirSync(path.join(workspaceRootPath, _idxPath, _label));
 
-    fs.writeFileSync(path.join(workspaceRootPath, _idxPath, _label.trim(), ".index.json"), JSON.stringify(emptyNodeIdxObj), "UTF-8");
-    fs.writeFileSync(path.join(workspaceRootPath, _idxPath, ".index.json"), JSON.stringify(_idxObj), "UTF-8");
+    saveNodeIndex(path.join(_idxPath, _label.trim()), emptyNodeIdxObj);
+    saveNodeIndex(_idxPath, _idxObj);
 
     vscode.window.registerTreeDataProvider("vsnote", m);
 };
@@ -42,7 +42,7 @@ export const delete_note_handler = async (nodePath: string, cIdx: number, nId: n
     if (del.label === "YES") {
         category.notes = notes.filter((note) => note.i !== nId);
         vscode.window.showInformationMessage(path.join(workspaceRootPath, nodePath, ".index.json"));
-        fs.writeFileSync(path.join(workspaceRootPath, nodePath, ".index.json"), JSON.stringify(_idxObj), "UTF-8");
+        saveNodeIndex(nodePath, _idxObj);
         deleteFolderRecursive(_note_folder);
         refreshPreview(nodePath);
     }
@@ -60,7 +60,7 @@ export const insert_category_handler = async (noteNode: INoteNode) => {
 
     const _noteMeta = genNoteMate(path.join(noteNode.parent, noteNode.label));
     _noteMeta.categorys.push({ name: _categoryName.trim(), cols: Number(categoryColNumber.label), notes: [] });
-    fs.writeFileSync(path.join(workspaceRootPath, noteNode.parent, noteNode.label, ".index.json"), JSON.stringify(_noteMeta), "UTF-8");
+    saveNodeIndex(path.join(noteNode.parent, noteNode.label), _noteMeta);
     refreshPreview(path.join(noteNode.parent, noteNode.label));
 };
 
@@ -80,15 +80,15 @@ export const insert_note_handler = async (nodePath: string, cIdx: number) => {
 
     for (let i = cols; i >= 1; i--) {
         fs.writeFileSync(path.join(noteFolder, i.toString()), "", "UTF-8");
-        vscode.workspace.openTextDocument(vscode.Uri.file(path.join(noteFolder, i.toString()))).then((document) => {
-            vscode.window.showTextDocument(document, { viewColumn: vscode.ViewColumn.Two, preview: false });
-        });
+        const document = await vscode.workspace.openTextDocument(vscode.Uri.file(path.join(noteFolder, i.toString())));
+        await vscode.window.showTextDocument(document, { viewColumn: vscode.ViewColumn.Two, preview: false });
     }
 
     const note = { d: 0, f: 0, i: note_id };
 
     notes.push(note);
-    fs.writeFileSync(path.join(workspaceRootPath, nodePath, ".index.json"), JSON.stringify(nodeMeta), "UTF-8");
+    fs.writeFileSync(path.join(workspaceRootPath, "notes", "seq"), (note_id + 1).toString(), "utf-8");
+    saveNodeIndex(nodePath, nodeMeta);
     refreshPreview(nodePath);
 };
 
@@ -97,7 +97,7 @@ export const update_category_handler = async (nodePath: string, cIdx: number) =>
     if (!_newCategoryName) { return; }
     const _nodeMeta: IIndex = genNoteMate(nodePath);
     _nodeMeta.categorys[cIdx].name = _newCategoryName;
-    fs.writeFileSync(path.join(workspaceRootPath, nodePath, ".index.json"), JSON.stringify(_nodeMeta), "UTF-8");
+    saveNodeIndex(nodePath, _nodeMeta);
     refreshPreview(nodePath);
 };
 
@@ -111,7 +111,7 @@ export const update_or_delete_note_doc_handler = async (nodePath: string, cIdx: 
         fs.mkdirSync(_note_doc_folder);
         fs.writeFileSync(path.join(_note_doc_folder, "README.md"), "", "utf-8");
     }
-    fs.writeFileSync(path.join(workspaceRootPath, nodePath, ".index.json"), JSON.stringify(nodeMeta), "UTF-8");
+    saveNodeIndex(nodePath, nodeMeta);
     const uri = vscode.Uri.file(_note_doc_folder);
     await vscode.commands.executeCommand("vscode.openFolder", uri, true);
 };
