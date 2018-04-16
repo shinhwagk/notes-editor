@@ -1,0 +1,2 @@
+job:node_load1{job="node"}
+instance:node_load1{instance="10.65.193.51:9100"}

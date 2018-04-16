@@ -1,1 +1,1 @@
-{"labels":[],"categorys":[{"name":"prometheus","cols":2,"notes":[{"d":0,"f":0,"i":224},{"d":0,"f":0,"i":225}]}],"seq":1}
+{"labels":[],"categorys":[{"name":"prometheus","cols":2,"notes":[{"d":1,"f":0,"i":224},{"d":0,"f":0,"i":225},{"d":0,"f":0,"i":226},{"d":0,"f":0,"i":227}]},{"name":"alertmanager","cols":2,"notes":[{"d":0,"f":0,"i":228},{"d":0,"f":0,"i":229},{"d":0,"f":0,"i":230},{"d":0,"f":0,"i":231},{"d":0,"f":0,"i":232},{"d":0,"f":0,"i":233}]}],"seq":1}

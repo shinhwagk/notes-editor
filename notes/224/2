@@ -1,1 +1,2 @@
 间隔多久去抓一次数据
+可以配置在global下面，也可以配置在scrape_configs。job_name下面

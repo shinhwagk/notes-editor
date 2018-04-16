@@ -1,0 +1,1 @@
+increase(http_requests_total{job="api-server"}[5m])
