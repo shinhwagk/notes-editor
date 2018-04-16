@@ -2,7 +2,7 @@
   "name": "vscode-note",
   "displayName": "vscode-note",
   "description": "save note by json file",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publisher": "shinhwagk",
   "engines": {
     "vscode": "^1.17.0"

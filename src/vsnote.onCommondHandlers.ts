@@ -23,7 +23,7 @@ export const insert_label_handler = (m) => async (noteNode?: INoteNode) => {
     const _idxObj = genNoteMate(_idxPath);
     _idxObj.labels.push(_label);
 
-    fs.mkdirSync(path.join(workspaceRootPath, _idxPath, _label));
+    fs.mkdirSync(path.join(workspaceRootPath, "indexs", _idxPath, _label));
 
     saveNodeIndex(path.join(_idxPath, _label.trim()), emptyNodeIdxObj);
     saveNodeIndex(_idxPath, _idxObj);
