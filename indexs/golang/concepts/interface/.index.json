@@ -1,0 +1,15 @@
+{
+    "labels": [],
+    "categorys": [
+        {
+            "name": "example",
+            "cols": 1,
+            "notes": [{
+                "d": 1,
+                "f": 0,
+                "i": 193
+            }]
+        }
+    ],
+    "seq": 1
+}
